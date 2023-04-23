@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// You need to change provider.
+// To use third party database: url = env("DATABASE_URL")
+// Such as postgresql, mysql or mongodb. 
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  name         String
+  lastname     String?
+  nickname     String?        @unique
+  password     String
+  isAdmin      Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Form         Form[]
+  AssignedForm AssignedForm[]
+}
+
+model Form {
+  id           String         @id @default(uuid())
+  authorId     Int
+  author       User           @relation(fields: [authorId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  question     Question[]
+  AssignedForm AssignedForm[]
+}
+
+model Topic {
+  id             Int              @id @default(autoincrement())
+  name           String           @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  PossibleAnswer PossibleAnswer[]
+  Question       Question[]
+}
+
+model PossibleAnswer {
+  id          Int           @id @default(autoincrement())
+  answer      String        @unique
+  topicId     Int
+  topic       Topic         @relation(fields: [topicId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  UsersAnswer UsersAnswer[]
+}
+
+model Question {
+  id          Int           @id @default(autoincrement())
+  question    String        @unique
+  topicId     Int
+  topic       Topic         @relation(fields: [topicId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Forms       Form[]
+  UsersAnswer UsersAnswer[]
+}
+
+model AssignedForm {
+  id          String        @id @default(uuid())
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id])
+  formId      String
+  form        Form          @relation(fields: [formId], references: [id])
+  reviewText  String?
+  itemUrl     String?
+  textComment String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  UsersAnswer UsersAnswer[]
+}
+
+model UsersAnswer {
+  id               String         @id @default(uuid())
+  questionId       Int
+  question         Question       @relation(fields: [questionId], references: [id])
+  possibleAnswerId Int
+  possibleAnswer   PossibleAnswer @relation(fields: [possibleAnswerId], references: [id])
+  assignedFormId   String
+  assignedForm     AssignedForm   @relation(fields: [assignedFormId], references: [id])
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
