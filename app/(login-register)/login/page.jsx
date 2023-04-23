@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Input_label from '../../components/input_label';
+import Input_label from '../../components/Input_label';
 import { AuthProvider } from '../../context/AuthContext';
 //import { useAuth } from '../../hooks/useAuth';
 const Page = () => {
