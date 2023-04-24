@@ -1,6 +1,6 @@
 /**
  *  We take care of the log in of an user.
- *  in case of log-in  we check if it's a valid user
+ *  in case of log-in we check if it's a valid user
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -23,7 +23,7 @@ export async function POST(request) {
   if (!payload?.error && payload?.id) {
     return new NextResponse(
       JSON.stringify({
-        ok: 200,
+        status: 200,
         message: 'already logged in',
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
@@ -33,7 +33,7 @@ export async function POST(request) {
   if (payload?.error) {
     console.log(payload?.error)
     return new NextResponse(
-      JSON.stringify({ status: '500', error: 'an error has occurred' }),
+      JSON.stringify({ status: 500, error: 'an error has occurred' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }
@@ -47,8 +47,12 @@ export async function POST(request) {
    */
   const user = await prisma.user.findFirst({
     where: {
-      email: { equals: username },
-      nickname: { equals: username },
+      OR: [
+        {
+          email: username,
+        },
+        { nickname: username },
+      ],
     },
     select: {
       id: true,
@@ -59,13 +63,20 @@ export async function POST(request) {
   const isSame = compare(password, user?.password)
 
   if (isSame) {
-    console.log('pasamos a relogear a la gente...')
     return signCookie(
       NextResponse.json({
-        ok: 200,
+        status: 200,
         message: 'successful login',
       }),
       { id: user.id }
+    )
+  } else {
+    return new NextResponse(
+      JSON.stringify({
+        status: 403,
+        message: 'failed login attempt',
+      }),
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
     )
   }
 }
