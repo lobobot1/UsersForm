@@ -10,10 +10,6 @@ const Page = () => {
     let information =[]
   return (
     <main className="flex min-h-screen flex-col  bg-slate-400">
-
-      <nav className=' bg-green-500 h-10 flex justify-end'>
-        users
-      </nav>
       <div className='p-11'>
         {/* title */}
         <div className=' text-center mb-10 text-5xl font-bold'>
