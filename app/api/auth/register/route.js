@@ -9,6 +9,13 @@ import prisma from '@lib/prisma'
 import { encryptToSaveDB } from '@lib/crypt'
 import isAdminRequest from '@lib/auth/isAdminRequest'
 import emailRegex from '@/util/emailRegex'
+import {
+  fatality,
+  someFieldMissing,
+  someFieldUnique,
+  unauthorized,
+} from '@lib/http/ErrorHandler'
+import { creationResponse } from '@lib/http/ResponseHandler'
 
 /**
  *
@@ -23,13 +30,7 @@ export async function POST(request) {
   console.log({ cookie: request.cookies.get('session_cookie') })
   /** if user is not an admin */
   if (!isAdmin) {
-    return new NextResponse(
-      JSON.stringify({
-        status: 401,
-        message: 'you are not allowed to register users',
-      }),
-      { status: 401, headers: { 'Content-Type': 'application/json' } }
-    )
+    return unauthorized()
   }
 
   const body = await request.json()
@@ -45,13 +46,7 @@ export async function POST(request) {
     !rePassword ||
     rePassword == ''
   ) {
-    return new NextResponse(
-      JSON.stringify({
-        status: 400,
-        message: 'some fields are missing',
-      }),
-      { status: 400, headers: { 'Content-Type': 'application/json' } }
-    )
+    return someFieldMissing()
   }
   /** if there is a lastname or not, we assign it */
   const lastname =
@@ -61,24 +56,12 @@ export async function POST(request) {
   const isEmail = emailRegex.test(email)
 
   if (!isEmail) {
-    return new NextResponse(
-      JSON.stringify({
-        status: 400,
-        message: 'wrong email address',
-      }),
-      { status: 400, headers: { 'Content-Type': 'application/json' } }
-    )
+    return someFieldMissing({ message: 'wrong email address' })
   }
 
   /** check if password matches */
   if (!(password === rePassword)) {
-    return new NextResponse(
-      JSON.stringify({
-        status: 400,
-        message: 'passwords do not match',
-      }),
-      { status: 400, headers: { 'Content-Type': 'application/json' } }
-    )
+    return someFieldMissing({ message: 'passwords do not match' })
   }
 
   /** Prepare data from db */
@@ -95,28 +78,14 @@ export async function POST(request) {
     const resultCreated = await prisma.user.create({ data: newUser })
 
     if (!resultCreated) {
-      return new NextResponse(
-        JSON.stringify({ status: 500, error: 'an error has occurred' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      )
+      return fatality()
     }
 
-    return new NextResponse(
-      JSON.stringify({ status: 201, message: 'an user has created' }),
-      { status: 201, headers: { 'Content-Type': 'application/json' } }
-    )
+    return creationResponse({
+      entity: 'user',
+      message: 'an user has been created',
+    })
   } catch (error) {
-    if (error?.code === 'P2002') {
-      const {
-        meta: { target },
-      } = error
-      return new NextResponse(
-        JSON.stringify({
-          status: 400,
-          message: `${target.toLocaleString()} value exists`,
-        }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
+    return someFieldUnique(error)
   }
 }
