@@ -1,6 +1,6 @@
 
 import { Inter } from 'next/font/google'
-import Users from '../components/Users'
+import Users from '../../components/Users'
 
 const inter = Inter({ subsets: ['latin'] })
 
