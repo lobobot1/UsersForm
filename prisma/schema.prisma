@@ -25,71 +25,55 @@ model User {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   Form         Form[]
-  AssignedForm AssignedForm[]
+  FormAnswered FormAnswered[]
 }
 
 model Form {
   id           String         @id @default(uuid())
+  revisionText String
   authorId     Int
   author       User           @relation(fields: [authorId], references: [id])
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   question     Question[]
-  AssignedForm AssignedForm[]
-}
-
-model Topic {
-  id             Int              @id @default(autoincrement())
-  name           String           @unique
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  PossibleAnswer PossibleAnswer[]
-  Question       Question[]
-}
-
-model PossibleAnswer {
-  id          Int           @id @default(autoincrement())
-  answer      String        @unique
-  topicId     Int
-  topic       Topic         @relation(fields: [topicId], references: [id])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  UsersAnswer UsersAnswer[]
+  FormAnswered FormAnswered[]
 }
 
 model Question {
-  id          Int           @id @default(autoincrement())
-  question    String        @unique
-  topicId     Int
-  topic       Topic         @relation(fields: [topicId], references: [id])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Forms       Form[]
-  UsersAnswer UsersAnswer[]
+  id             Int              @id @default(autoincrement())
+  question       String           @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Forms          Form[]
+  FormAnswered   FormAnswered[]
+  PossibleAnswer PossibleAnswer[]
 }
 
-model AssignedForm {
-  id          String        @id @default(uuid())
-  userId      Int
-  user        User          @relation(fields: [userId], references: [id])
-  formId      String
-  form        Form          @relation(fields: [formId], references: [id])
-  reviewText  String?
-  itemUrl     String?
-  textComment String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  UsersAnswer UsersAnswer[]
+model PossibleAnswer {
+  id         Int      @id @default(autoincrement())
+  answer     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
-model UsersAnswer {
-  id               String         @id @default(uuid())
-  questionId       Int
-  question         Question       @relation(fields: [questionId], references: [id])
-  possibleAnswerId Int
-  possibleAnswer   PossibleAnswer @relation(fields: [possibleAnswerId], references: [id])
-  assignedFormId   String
-  assignedForm     AssignedForm   @relation(fields: [assignedFormId], references: [id])
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+model FormAnswered {
+  id         String   @id @default(uuid())
+  answer     String?
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+  formId     String
+  form       Form     @relation(fields: [formId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Status {
+  id        Int      @id @default(autoincrement())
+  status    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
