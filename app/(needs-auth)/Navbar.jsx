@@ -3,6 +3,7 @@ import Link from "next/link";
 const links = [
   { href: "/form", label: "Forms" },
   { href: "/users", label: "Users" },
+  { href: "/settings/answers", label: "Settings" },
   { href: "/api/auth/logout", label: "Logout" },
 ];
 
