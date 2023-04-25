@@ -5,6 +5,10 @@ const links = [
     href: "/settings/answers",
     label: "Answers",
   },
+  {
+    href: "/settings/topics",
+    label: "Topics",
+  },
 ];
 
 const SettingsNavbar = () => {
