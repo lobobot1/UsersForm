@@ -61,6 +61,8 @@ model PossibleAnswer {
 model FormAnswered {
   id         String   @id @default(uuid())
   answer     String?
+  statusId   Int
+  status     Status   @relation(fields: [statusId], references: [id])
   userId     Int
   user       User     @relation(fields: [userId], references: [id])
   questionId Int
@@ -72,8 +74,9 @@ model FormAnswered {
 }
 
 model Status {
-  id        Int      @id @default(autoincrement())
-  status    String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int            @id @default(autoincrement())
+  status       String         @unique
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  FormAnswered FormAnswered[]
 }
