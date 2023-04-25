@@ -39,7 +39,7 @@ export async function POST(request) {
     if (!newQuestion) {
       return fatality()
     }
-    return creationResponse({ entity: 'question' })
+    return creationResponse({ entity: 'question', id: newQuestion.id })
   } catch (error) {
     console.log({ error })
     return someFieldUnique(error)
