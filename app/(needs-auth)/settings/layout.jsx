@@ -1,12 +1,12 @@
-import SettingsNavbar from "./SettingsNavbar";
+import SettingsNavbar from './SettingsNavbar'
 
 const Layout = ({ children }) => {
   return (
     <>
       <SettingsNavbar />
-      <div className="p-2">{children}</div>
+      <div className='p-2'>{children}</div>
     </>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout
