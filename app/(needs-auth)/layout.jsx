@@ -1,18 +1,18 @@
-import { isLoggedRequest } from '@lib/auth/isLoggedRequest';
+import { isLoggedRequest } from "@lib/auth/isLoggedRequest";
 import { redirect } from "next/navigation";
-import Navbar from '../components/Navbar';
+import Navbar from "./Navbar";
 
 export default function RootLayout({ children }) {
-  const isLogged = isLoggedRequest()
+  const isLogged = isLoggedRequest();
 
   if (!isLogged) {
-    redirect("/login")
+    redirect("/login");
   }
 
   return (
     <>
       <Navbar />
-      {children}
+      <main className="container mx-auto">{children}</main>
     </>
   );
 }
