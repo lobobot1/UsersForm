@@ -1,4 +1,4 @@
-/** Get all topics */
+/** Get all questions */
 import { fatality, unauthorized } from '@lib/http/ErrorHandler'
 import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import { NextRequest } from 'next/server'
@@ -10,11 +10,22 @@ import prisma from '@lib/prisma'
  * @param { NextRequest } request
  */
 export async function GET() {
-  if (!isLoggedRequest()) return unauthorized({ entity: 'read topics' })
+  if (!isLoggedRequest()) return unauthorized({ entity: 'read questions' })
 
-  const data = await prisma.topic.findMany({
-    select: { id: true, name: true, updatedAt: true, createdAt: true },
-    orderBy: { name: 'asc' },
+  const data = await prisma.question.findMany({
+    select: {
+      id: true,
+      question: true,
+      topic: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      updatedAt: true,
+      createdAt: true,
+    },
+    orderBy: { question: 'asc' },
   })
 
   if (!data) return fatality()
