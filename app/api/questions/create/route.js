@@ -23,8 +23,8 @@ export async function POST(request) {
     return unauthorized({ message: 'create questions' })
 
   const body = await request.json()
-  const { question, topicId } = body
-  if (!question || !topicId) {
+  const { question } = body
+  if (!question) {
     return someFieldMissing()
   }
 
@@ -32,13 +32,11 @@ export async function POST(request) {
     const newQuestion = await prisma.question.create({
       data: {
         question,
-        topicId: Number(topicId),
       },
       select: { id: true },
     })
 
     if (!newQuestion) {
-      console.log({ newQuestion })
       return fatality()
     }
     return creationResponse({ entity: 'question' })
