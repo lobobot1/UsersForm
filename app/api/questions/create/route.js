@@ -2,7 +2,7 @@ import { creationResponse } from '@lib/http/ResponseHandler'
 import { NextRequest } from 'next/server'
 import {
   someFieldMissing,
-  someFieldUnique,
+  somePrismaError,
   unauthorized,
 } from '@lib/http/ErrorHandler'
 import isAdminRequest from '@lib/auth/isAdminRequest'
@@ -41,7 +41,6 @@ export async function POST(request) {
     }
     return creationResponse({ entity: 'question', id: newQuestion.id })
   } catch (error) {
-    console.log({ error })
-    return someFieldUnique(error)
+    return somePrismaError(error)
   }
 }
