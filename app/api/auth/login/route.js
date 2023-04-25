@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { decodeCookie, signCookie } from '@lib/jwt'
 import prisma from '@lib/prisma'
 import { compare } from '@lib/crypt'
+import { alreadyLogged } from '@lib/http/ResponseHandler'
+import { failedLogin, fatality } from '@lib/http/ErrorHandler'
 
 /**
  *
@@ -21,21 +23,12 @@ export async function POST(request) {
   /** if exists a valid cookie */
   console.log({ payload: payload })
   if (!payload?.error && payload?.id) {
-    return new NextResponse(
-      JSON.stringify({
-        status: 200,
-        message: 'already logged in',
-      }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    )
+    return alreadyLogged()
   }
 
   if (payload?.error) {
     console.log(payload?.error)
-    return new NextResponse(
-      JSON.stringify({ status: 500, error: 'an error has occurred' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    )
+    return fatality()
   }
 
   /** else if not has cookie... validate body and return a cookie */
@@ -62,21 +55,13 @@ export async function POST(request) {
 
   const isSame = compare(password, user?.password)
 
-  if (isSame) {
-    return signCookie(
-      NextResponse.json({
-        status: 200,
-        message: 'successful login',
-      }),
-      { id: user.id }
-    )
-  } else {
-    return new NextResponse(
-      JSON.stringify({
-        status: 403,
-        message: 'failed login attempt',
-      }),
-      { status: 403, headers: { 'Content-Type': 'application/json' } }
-    )
-  }
+  if (!isSame) return failedLogin()
+
+  return signCookie(
+    NextResponse.json({
+      status: 200,
+      message: 'successful login',
+    }),
+    { id: user.id }
+  )
 }

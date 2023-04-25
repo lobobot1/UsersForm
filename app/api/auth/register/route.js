@@ -4,7 +4,7 @@
  *  and the registrant is an Admin user successfully logged in.
  */
 
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import prisma from '@lib/prisma'
 import { encryptToSaveDB } from '@lib/crypt'
 import isAdminRequest from '@lib/auth/isAdminRequest'
@@ -25,13 +25,9 @@ export async function POST(request) {
   /**
    * Check if exists session cookie
    */
-  const isAdmin = await isAdminRequest(request)
 
-  console.log({ cookie: request.cookies.get('session_cookie') })
   /** if user is not an admin */
-  if (!isAdmin) {
-    return unauthorized()
-  }
+  if (!(await isAdminRequest(request))) return unauthorized()
 
   const body = await request.json()
 

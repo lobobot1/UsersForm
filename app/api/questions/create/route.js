@@ -1,16 +1,12 @@
-// import prisma from "@/lib/prisma";
-// import { headers } from "next/dist/client/components/headers";
-import isAdminRequest from '@lib/auth/isAdminRequest'
+import { creationResponse } from '@lib/http/ResponseHandler'
+import { NextRequest } from 'next/server'
 import {
   someFieldMissing,
   someFieldUnique,
   unauthorized,
 } from '@lib/http/ErrorHandler'
-import { creationResponse } from '@lib/http/ResponseHandler'
+import isAdminRequest from '@lib/auth/isAdminRequest'
 import prisma from '@lib/prisma'
-import { NextRequest, NextResponse } from 'next/server'
-// import { withIronSessionApiRoute } from 'iron-session/next'
-// import { sessionOption } from "@/lib/iron-session";
 
 /**
  *
@@ -23,10 +19,8 @@ export async function POST(request) {
    * Create new Record
    * Return success response or any error
    */
-  const isAdmin = isAdminRequest(request)
-  if (!isAdmin) {
+  if (!(await isAdminRequest(request)))
     return unauthorized({ message: 'create questions' })
-  }
 
   const body = await request.json()
   const { question, topicId } = body
