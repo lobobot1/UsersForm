@@ -6,7 +6,11 @@ import { useForm } from 'react-hook-form'
 
 const CreateQuestionForm = () => {
   const { createQuestion } = useQuestions()
-  const { handleSubmit, register } = useForm({
+  const {
+    handleSubmit,
+    register,
+    formState: { isSubmitting },
+  } = useForm({
     defaultValues: { question: '' },
   })
 
@@ -17,7 +21,11 @@ const CreateQuestionForm = () => {
     >
       <Input_label label='Question' {...register('question')} required />
 
-      <button type='submit' className='bg-blue-200'>
+      <button
+        type='submit'
+        className='bg-blue-200 disabled:bg-gray-400'
+        disabled={isSubmitting}
+      >
         Create
       </button>
     </form>
