@@ -1,13 +1,6 @@
 import isNumber from '@/util/isNumber'
-import {
-  cantDoThatResponse,
-  invalidUrlParam,
-  notFoundResponse,
-} from '@lib/http/ErrorHandler'
-import {
-  successDeleteResponse,
-  successRetrieveResponse,
-} from '@lib/http/ResponseHandler'
+import { cantDoThatResponse, invalidUrlParam } from '@lib/http/ErrorHandler'
+import { successDeleteResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 
 export async function DELETE(request, { params }) {
