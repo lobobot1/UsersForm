@@ -12,7 +12,7 @@ import emailRegex from '@/util/emailRegex'
 import {
   fatality,
   someFieldMissing,
-  someFieldUnique,
+  somePrismaError,
   unauthorized,
 } from '@lib/http/ErrorHandler'
 import { creationResponse } from '@lib/http/ResponseHandler'
@@ -82,6 +82,6 @@ export async function POST(request) {
       message: 'an user has been created',
     })
   } catch (error) {
-    return someFieldUnique(error)
+    return somePrismaError(error)
   }
 }

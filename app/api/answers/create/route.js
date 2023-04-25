@@ -1,7 +1,7 @@
 import isAdminRequest from '@lib/auth/isAdminRequest'
 import {
   someFieldMissing,
-  someFieldUnique,
+  somePrismaError,
   unauthorized,
 } from '@lib/http/ErrorHandler'
 import { creationResponse } from '@lib/http/ResponseHandler'
@@ -24,7 +24,7 @@ export async function POST(req) {
     })
     return creationResponse({ message: 'an answer has been created' })
   } catch (error) {
-    return someFieldUnique(error)
+    return somePrismaError(error)
   }
 }
 
