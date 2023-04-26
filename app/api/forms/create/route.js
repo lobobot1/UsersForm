@@ -28,7 +28,7 @@ export async function POST(request) {
         authorId: id,
         revisionText,
         question: {
-          connect: questions.map((id) => ({ id })),
+          connect: questions,
         },
       },
       select: {

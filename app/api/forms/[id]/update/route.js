@@ -26,7 +26,7 @@ export async function PUT(request, { params }) {
       data: {
         authorId,
         question: {
-          set: questions.map((id) => ({ id })),
+          set: questions,
         },
         revisionText,
       },
