@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import UpdateQuestionForm from './UpdateQuestionForm'
 import useQuestionDetail from '@/app/hooks/useQuestionDetail'
+import PencilSquare from '@/app/components/icons/PencilSquare'
 
 /** @param {{ question: { id: number, question: string } }} props */
 const QuestionItem = ({ question }) => {
@@ -17,7 +18,9 @@ const QuestionItem = ({ question }) => {
       {!isEditing && (
         <div className='flex items-center justify-between'>
           <span>{question.question}</span>
-          <button onClick={() => setIsEditing(true)}>Editar</button>
+          <button onClick={() => setIsEditing(true)} title='Edit'>
+            <PencilSquare />
+          </button>
         </div>
       )}
       {isEditing && questionDetail && (
