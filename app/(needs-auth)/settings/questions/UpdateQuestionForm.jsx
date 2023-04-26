@@ -6,9 +6,9 @@ import { useState } from 'react'
 import useQuestionDetail from '@/app/hooks/useQuestionDetail'
 
 /**
- * @param {{ question: { id: number, question: string, answers: { id: number, value: string }[] }, onSubmit: () => void }} props
+ * @param {{ question: { id: number, question: string, answers: { id: number, value: string }[] }, onSubmit: () => void, onCancel: () => void }} props
  */
-const UpdateQuestionForm = ({ question, onSubmit }) => {
+const UpdateQuestionForm = ({ question, onSubmit, onCancel }) => {
   const [error, setError] = useState(null)
   const { updateQuestion } = useQuestionDetail(question.id, true)
 
@@ -33,6 +33,7 @@ const UpdateQuestionForm = ({ question, onSubmit }) => {
           answers: question.answers,
         }}
         trackAnswers
+        onCancel={onCancel}
       />
     </>
   )

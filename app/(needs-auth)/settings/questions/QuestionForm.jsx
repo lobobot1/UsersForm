@@ -18,6 +18,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
  * @param {FormValues} [props.defaultValues]
  * @param {string} [props.buttonText]
  * @param {boolean} [props.trackAnswers]
+ * @param {boolean} [props.onCancel]
  */
 const QuestionForm = ({
   showAnswers = true,
@@ -26,6 +27,7 @@ const QuestionForm = ({
   defaultValues = { question: '', answers: [{ value: '' }, { value: '' }] },
   buttonText = 'Create',
   trackAnswers = false,
+  onCancel,
 }) => {
   const {
     handleSubmit,
@@ -109,13 +111,28 @@ const QuestionForm = ({
         </fieldset>
       )}
 
-      <button
-        type='submit'
-        className='bg-blue-200 disabled:bg-gray-400 rounded-md py-1 px-2 hover:bg-blue-300'
-        disabled={isSubmitting}
-      >
-        {buttonText}
-      </button>
+      <div className='flex justify-end'>
+        {onCancel && (
+          <button
+            type='button'
+            className='bg-red-200 rounded-md py-1 px-2 hover:bg-red-300'
+            onClick={() => {
+              onCancel()
+              reset()
+            }}
+          >
+            Cancel
+          </button>
+        )}
+
+        <button
+          type='submit'
+          className='bg-blue-200 disabled:bg-gray-400 rounded-md py-1 px-2 hover:bg-blue-300 ml-auto'
+          disabled={isSubmitting}
+        >
+          {buttonText}
+        </button>
+      </div>
     </form>
   )
 }
