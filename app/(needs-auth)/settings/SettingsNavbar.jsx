@@ -8,6 +8,10 @@ const links = [
     label: 'Questions',
   },
   {
+    href: '/settings/forms',
+    label: 'Forms',
+  },
+  {
     href: '/settings/users',
     label: 'Users',
   },
