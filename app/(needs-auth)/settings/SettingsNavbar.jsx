@@ -1,5 +1,6 @@
+'use client'
 import Link from 'next/link'
-import { headers } from 'next/headers'
+import { usePathname } from 'next/navigation'
 
 const links = [
   {
@@ -13,8 +14,7 @@ const links = [
 ]
 
 const SettingsNavbar = () => {
-  const headersList = headers()
-  const currentPath = headersList.get('x-original-uri')
+  const pathName = usePathname()
 
   return (
     <nav className='mt-3 p-2 text-white'>
@@ -25,9 +25,7 @@ const SettingsNavbar = () => {
               href={link.href}
               className={
                 'p-2 rounded-md ' +
-                (currentPath === link.href
-                  ? 'bg-white text-black'
-                  : 'bg-gray-600')
+                (pathName === link.href ? 'bg-white text-black' : 'bg-gray-600')
               }
             >
               {link.label}

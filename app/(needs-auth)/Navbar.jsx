@@ -17,7 +17,10 @@ const Navbar = () => {
           <ul className='flex gap-5'>
             {links.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} prefetch={!link.dontPrefetch}>
+                <Link
+                  href={link.href}
+                  prefetch={link.dontPrefetch ? false : undefined}
+                >
                   {link.label}
                 </Link>
               </li>
