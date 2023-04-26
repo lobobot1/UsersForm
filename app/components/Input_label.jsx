@@ -20,7 +20,7 @@ const Input_label = forwardRef(
           type={type}
           id={id || name}
           name={name}
-          className='focus:outline-none focus:border-cyan-500 py-1 pl-2 rounded-md border-2 border-gray-300 w-full'
+          className='text-black focus:outline-none focus:border-cyan-500 py-1 pl-2 rounded-md border-2 border-gray-300 w-full'
           {...props}
         />
       </div>

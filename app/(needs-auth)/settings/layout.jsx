@@ -4,7 +4,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <SettingsNavbar />
-      <div className='p-2'>{children}</div>
+      <div className='p-2 text-white'>{children}</div>
     </>
   )
 }
