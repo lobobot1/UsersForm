@@ -13,7 +13,7 @@ const QuestionItem = ({ question }) => {
   const closeEditForm = useCallback(() => setIsEditing(false), [])
 
   return (
-    <li key={question.id} className='border rounded-md p-2'>
+    <li key={question.id} className='rounded-md p-2 bg-white text-black'>
       {isLoading && <p>Loading...</p>}
       {!isEditing && (
         <div className='flex items-center justify-between'>

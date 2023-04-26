@@ -115,7 +115,7 @@ const QuestionForm = ({
         {onCancel && (
           <button
             type='button'
-            className='bg-red-200 rounded-md py-1 px-2 hover:bg-red-300'
+            className='bg-red-500 text-white rounded-md py-1 px-2 hover:bg-red-400'
             onClick={() => {
               onCancel()
               reset()
@@ -127,7 +127,7 @@ const QuestionForm = ({
 
         <button
           type='submit'
-          className='bg-blue-200 disabled:bg-gray-400 rounded-md py-1 px-2 hover:bg-blue-300 ml-auto'
+          className='bg-blue-500 text-white disabled:bg-gray-400 rounded-md py-1 px-2 hover:bg-blue-400 ml-auto'
           disabled={isSubmitting}
         >
           {buttonText}
