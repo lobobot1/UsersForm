@@ -1,6 +1,7 @@
 'use client'
 
 import useQuestions from '@/app/hooks/useQuestions'
+import QuestionItem from './QuestionItem'
 
 const QuestionList = () => {
   const { questions, error, isLoading } = useQuestions()
@@ -12,11 +13,9 @@ const QuestionList = () => {
     return <p>{error.message}</p>
   }
   return (
-    <ul className='grid md:grid-cols-2 gap-2'>
+    <ul className='space-y-3'>
       {questions?.data.map((question) => (
-        <li key={question.id} className='border rounded-md p-2'>
-          {question.question}
-        </li>
+        <QuestionItem key={question.id} question={question} />
       ))}
     </ul>
   )

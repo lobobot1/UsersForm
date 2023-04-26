@@ -1,6 +1,10 @@
 import QuestionList from './QuestionList'
 import CreateQuestionForm from './CreateQuestionForm'
 
+export const metadata = {
+  title: 'Settings | Questions',
+}
+
 const Page = async () => {
   return (
     <div className='lg:flex gap-6'>

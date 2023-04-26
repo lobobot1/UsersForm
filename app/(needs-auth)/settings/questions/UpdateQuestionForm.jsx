@@ -4,31 +4,34 @@ import QuestionForm from './QuestionForm'
 import ErrorAlert from '@/app/components/ErrorAlert'
 import { useState } from 'react'
 
-const CreateQuestionForm = () => {
+/**
+ * @param {{ question: { id: number, question: string, onSubmit: () => void }}} props
+ */
+const UpdateQuestionForm = ({ question, onSubmit }) => {
   const [error, setError] = useState(null)
-  const { createQuestion } = useQuestions()
+  const { updateQuestion } = useQuestions()
 
   return (
     <>
       {error && <ErrorAlert>{error}</ErrorAlert>}
       <QuestionForm
-        resetOnSuccess
         onSubmit={async (data) => {
           try {
             setError(null)
-            await createQuestion({
-              ...data,
-              answers: data.answers.map((ans) => ans.value),
-            })
+            await updateQuestion(data, question.id)
+            onSubmit()
           } catch (err) {
             if (err instanceof Error) {
               setError(err.message)
             }
           }
         }}
+        showAnswers={false}
+        buttonText='Save'
+        defaultValues={{ question: question.question }}
       />
     </>
   )
 }
 
-export default CreateQuestionForm
+export default UpdateQuestionForm
