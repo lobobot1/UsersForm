@@ -2,7 +2,7 @@ import isUUID from '@/util/isUUId'
 import { invalidUrlParam, somePrismaError } from '@lib/http/ErrorHandler'
 import prisma from '@lib/prisma'
 import { NextRequest } from 'next/server'
-const { REVIEWED_STATUS } = process.env
+const { REVISED_STATUS } = process.env
 /**
  * @param { NextRequest } request
  * @param { object } context
@@ -19,7 +19,7 @@ export async function DELETE(request, { params }) {
         FormAnswered: {
           some: {
             NOT: {
-              statusId: Number(REVIEWED_STATUS),
+              statusId: Number(REVISED_STATUS),
             },
           },
         },

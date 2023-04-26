@@ -8,7 +8,7 @@ import {
 import { successUpdateResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
-const { REVIEWED_STATUS } = process.env
+const { REVISED_STATUS } = process.env
 /**
  *
  * @param {NextRequest} request
@@ -32,7 +32,7 @@ export async function PUT(request, { params }) {
             FormAnswered: {
               some: {
                 AND: [
-                  { statusId: Number(REVIEWED_STATUS) },
+                  { statusId: Number(REVISED_STATUS) },
                   { questionId: Number(id) },
                 ],
               },
