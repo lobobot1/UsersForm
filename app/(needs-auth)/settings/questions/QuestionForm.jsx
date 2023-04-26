@@ -91,13 +91,11 @@ const QuestionForm = ({
               {index > 0 && (
                 <button
                   onClick={() => {
-                    if (!trackAnswers) return
                     const answers = getValues('answers')
                     const answerId = answers[index].id
                     remove(index)
-                    if (!answerId) return
+                    if (!answerId || !trackAnswers) return
                     setDeletedAnswersIds([...deletedAnswersIds, answerId])
-                    console.log({ answers: getValues('answers') })
                   }}
                   className='absolute right-2 top-1/2 -translate-y-1/2 rounded-full flex items-center justify-center'
                   title={`Remove answer ${index + 1}`}

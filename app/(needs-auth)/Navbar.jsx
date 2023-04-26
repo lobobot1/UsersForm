@@ -4,7 +4,7 @@ const links = [
   { href: '/form', label: 'Forms' },
   { href: '/users', label: 'Users' },
   { href: '/settings/questions', label: 'Settings' },
-  { href: '/api/auth/logout', label: 'Logout' },
+  { href: '/api/auth/logout', label: 'Logout', dontPrefetch: true },
 ]
 
 const Navbar = () => {
@@ -17,7 +17,9 @@ const Navbar = () => {
           <ul className='flex gap-5'>
             {links.map((link) => (
               <li key={link.href}>
-                <Link href={link.href}>{link.label}</Link>
+                <Link href={link.href} prefetch={!link.dontPrefetch}>
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>

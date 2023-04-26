@@ -14,7 +14,7 @@ const links = [
 
 const SettingsNavbar = () => {
   const headersList = headers()
-  const currentPath = headersList.get('next-url')
+  const currentPath = headersList.get('x-original-uri')
 
   return (
     <nav className='mt-3 p-2 text-white'>
