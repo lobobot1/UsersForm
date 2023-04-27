@@ -1,13 +1,17 @@
 import isNumber from '@/util/isNumber'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import {
   invalidUrlParam,
   notFoundResponse,
   somePrismaError,
+  unauthorized,
 } from '@lib/http/ErrorHandler'
 import { successRetrieveResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 
 export async function GET(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'read question' })
+
   const { id } = params
 
   if (!isNumber(id)) return invalidUrlParam()

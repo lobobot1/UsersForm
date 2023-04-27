@@ -1,5 +1,7 @@
 import isNumber from '@/util/isNumber'
-import { fatality, somePrismaError } from '@lib/http/ErrorHandler'
+import { getCookieId } from '@lib/auth/isAdminRequest'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
+import { fatality, somePrismaError, unauthorized } from '@lib/http/ErrorHandler'
 import { successRetrieveResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 import { NextRequest } from 'next/server'
@@ -11,10 +13,20 @@ import { NextRequest } from 'next/server'
  * @param { object } context.params
  */
 export async function GET(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'read user' })
+
   const { id } = params
   if (!isNumber(id)) return invalidUrlParam()
 
   try {
+    const userIdCookie = getCookieId(request)
+    const userId = await prisma.user.findUnique({
+      where: { id: userIdCookie },
+      select: { id: true },
+    })
+
+    if (!isAdmin && !(userId.id === id))
+      return unauthorized({ entity: 'update this user' })
     const data = await prisma.user.findFirst({
       select: {
         id: true,

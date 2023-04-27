@@ -1,9 +1,23 @@
 import isNumber from '@/util/isNumber'
-import { invalidUrlParam } from '@lib/http/ErrorHandler'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
+import {
+  invalidUrlParam,
+  somePrismaError,
+  unauthorized,
+} from '@lib/http/ErrorHandler'
 import { successDeleteResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
-
+import { NextResponse } from 'next/server'
+/**
+ *
+ * @param { NextRequest } request
+ * @param { object } context
+ * @param { object } context.params
+ * @returns { Promise<NextResponse> }
+ */
 export async function DELETE(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'delete answers' })
+
   const { id } = params
 
   if (!isNumber(id)) return invalidUrlParam()

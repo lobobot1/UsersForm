@@ -1,8 +1,10 @@
 import { getCookieId } from '@lib/auth/isAdminRequest'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import {
   fatality,
   someFieldMissing,
   somePrismaError,
+  unauthorized,
 } from '@lib/http/ErrorHandler'
 import {
   successRetrieveResponse,
@@ -41,6 +43,7 @@ const select = {
  * @param { object } context.params
  */
 export async function POST(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'answer form' })
   const { id } = params
   const userId = getCookieId(request)
 
@@ -98,6 +101,7 @@ export async function POST(request, { params }) {
  * @param { object } context.params
  */
 export async function PUT(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'update some answer' })
   const { id } = params
 
   const { answers, status } = validateBody(await request.json())

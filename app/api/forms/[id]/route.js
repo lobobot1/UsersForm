@@ -1,9 +1,11 @@
 import groupBy from '@/util/groupBy'
 import isUUID from '@/util/isUUId'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import {
   invalidUrlParam,
   notFoundResponse,
   somePrismaError,
+  unauthorized,
 } from '@lib/http/ErrorHandler'
 import { successRetrieveResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
@@ -16,6 +18,8 @@ import { NextRequest } from 'next/server'
  * @param { object } context.params
  */
 export async function GET(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'read form' })
+
   const { id } = params
   if (!isUUID(id)) return invalidUrlParam()
 

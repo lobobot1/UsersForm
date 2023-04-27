@@ -1,8 +1,10 @@
 import isUUID from '@/util/isUUId'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import {
   fatality,
   invalidUrlParam,
   somePrismaError,
+  unauthorized,
 } from '@lib/http/ErrorHandler'
 import { successDeleteResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
@@ -14,6 +16,7 @@ const { CREATED_STATUS } = process.env
  * @param { object } context.params
  */
 export async function DELETE(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'delete forms' })
   const { id } = params
   if (!isUUID(id)) return invalidUrlParam()
 
