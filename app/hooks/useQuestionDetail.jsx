@@ -1,5 +1,5 @@
 import { fetch } from '@lib/fetch'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import useSWR from 'swr'
 import { useSWRConfig } from 'swr'
 
@@ -10,6 +10,7 @@ import { useSWRConfig } from 'swr'
 export default function useQuestionDetail(questionId, enabled) {
   const swr = useSWR(enabled ? `/api/questions/${questionId}` : null, fetch)
   const { mutate } = useSWRConfig()
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const updateQuestion = useCallback(
     /**
@@ -43,11 +44,32 @@ export default function useQuestionDetail(questionId, enabled) {
       )
 
       await Promise.all([...createOrUpdatePromises, ...deletePromises])
-      swr.mutate()
-      mutate('/api/questions')
+      await swr.mutate()
+      await mutate('/api/questions')
     },
     [swr, questionId, mutate]
   )
 
-  return { ...swr, questionDetail: swr.data, updateQuestion }
+  const deleteQuestion = useCallback(async () => {
+    setIsDeleting(true)
+    try {
+      await fetch(`/api/questions/${questionId}/delete`, {
+        method: 'DELETE',
+      })
+      await mutate('/api/questions')
+    } catch (err) {
+      setIsDeleting(false)
+      throw err
+    } finally {
+      setIsDeleting(false)
+    }
+  }, [questionId, mutate])
+
+  return {
+    ...swr,
+    questionDetail: swr.data,
+    updateQuestion,
+    deleteQuestion,
+    isDeleting,
+  }
 }
