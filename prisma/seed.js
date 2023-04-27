@@ -1,11 +1,55 @@
 const { PrismaClient } = require('@prisma/client')
+const fs = require('fs').promises
+
+const CryptoJS = require('crypto-js')
 const prisma = new PrismaClient()
 
+/** Execute Seeder */
+Main()
+  .then(async () => await prisma.$disconnect())
+  .catch(async (error) => {
+    console.error({ error })
+    await prisma.$disconnect()
+    process.exit(1)
+  })
+  .finally(() => {
+    console.timeEnd('🌻 Seeder Finished. ✔')
+  })
+
 async function Main() {
-  /** Seed status of answer form **/
   console.time('🌻 Seeder Finished. ✔')
   console.log('▶ Seeder Starting....')
+  console.log('🗄 Generate Data....')
 
+  if (await formStatus()) console.log('📃 Form States Created ✔')
+
+  if (await firstAdmin()) console.log('👨‍💻 Administrator User Created ✔')
+}
+
+async function firstAdmin() {
+  /** Seed first Admin user */
+  console.log('👨‍💻 Generating Administrator User')
+  const file = await fs.readFile('.env.local', 'utf-8')
+  const secret = file.match(/SECRET="(.*)"/)[1]
+
+  const data = {
+    id: 1,
+    email: 'example@gmail.com',
+    name: 'admin',
+    isAdmin: true,
+    nickname: 'admin',
+    password: encryptToSaveDB('password', secret),
+  }
+
+  return Boolean(
+    await prisma.user.create({
+      data,
+    })
+  )
+}
+async function formStatus() {
+  console.log('📃 Generating Form States...')
+  /** Seed status of answer form **/
   const status = [
     { id: 1, status: 'answered' },
     { id: 2, status: 'created' },
@@ -14,23 +58,22 @@ async function Main() {
     { id: 5, status: 'revised' },
     { id: 6, status: 'updated' },
   ]
-
-  console.log('🗄 Generate Data....')
-  if (
+  return Boolean(
     Promise.all(
       status.map(async (data) => await prisma.status.create({ data }))
     )
   )
-    console.log('📃 Form States Created')
 }
 
-Main()
-  .then(async () => await prisma.$disconnect())
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
-  .finally(() => {
-    console.timeEnd('🌻 Seeder Finished. ✔')
-  })
+/**
+ *  Encrypt function, return an string hashed with *HmacSHA256*
+ * @param {string} msg  HmacSHA256
+ * @param {string} secret  secret from env
+ * @returns {string} string with hash hashed
+ */
+function encryptToSaveDB(msg, secret) {
+  if (!secret)
+    throw new Error('Not SECRET encrypt environment variables configured')
+  const k = secret
+  return CryptoJS.HmacSHA256(CryptoJS.SHA256(msg).toString(), k).toString()
+}
