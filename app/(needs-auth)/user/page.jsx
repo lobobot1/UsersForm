@@ -6,26 +6,27 @@ const User = () => {
     'adios',
   ]
   return (
-    <main className='flex min-h-screen flex-col bg-[#0B132B]'>
-      <div className='p-11 flex flex-col justify-center'>
-        <h1 className='text-5xl text-center font-bold text-[#5BC0BE]'>
-          Text List Total:{' '}
-          <strong className='text-purple-600'>{text.length}</strong>
-        </h1>
+  <>
+    <div className='text-neutral-800 font-bold text-3xl py-4 px-6 flex justify-between items-center'>
+      <h1>Review List</h1>
 
-        <div className='flex flex-col gap-2 mt-10 mx-16'>
-          {text.map((item, index) => (
-            <Link
-              href={'/form'}
-              key={index}
-              className={`flex justify-center items-center rounded-md py-5 px-8 mb-2 box-border border-2 border-black border-solid shadow-[12px_17px_51px_rgba(0,0,0,0.22)] cursor-pointer transition-color duration-[0.5s] select-none text-[black] bg-[#545E75] hover:border-slate-300 delay-[50ms] text-lg font-[543]`}
-            >
-              <h2>{item}</h2>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </main>
+      <p className='p-2 text-center bg-teal-600 rounded-md text-neutral-50 text-xl'>Total: {text.length}</p>
+    </div>
+
+    <div className=' py-[.1rem] mx-2 rounded-md bg-neutral-500'></div>
+
+    <section className='mt-4 p-2 grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2'>
+      {text.map((item, index) => (
+        <Link
+        href={'/form'}
+        key={index}
+        className={`flex justify-center items-center rounded-md py-5 px-8 mb-2  cursor-pointer transition-color duration-[0.5s] bg-neutral-100 hover:bg-neutral-200 hover:scale-105 delay-[50ms] text-neutral-800 font-semibold shadow-xl`}
+        >
+          {item}
+        </Link>
+      ))}
+    </section>
+  </>
   )
 }
 

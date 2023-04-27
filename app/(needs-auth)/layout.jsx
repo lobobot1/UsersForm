@@ -12,7 +12,9 @@ export default function RootLayout({ children }) {
   return (
     <div className='flex flex-col'>
       <NavbarUser />
-      <main className='container mx-auto grow'>{children}</main>
+      <main className='bg-neutral-200 min-h-screen'>
+        {children}
+      </main>
     </div>
   )
 }
