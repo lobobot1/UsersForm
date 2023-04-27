@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 
 /**
  * @param {object} props
- * @param {boolean} [props.showQuestions]
  * @param {(data: import('./types').UserFormValues) => Promise<void>} props.onSubmit
  * @param {import('./types').UserFormValues} [props.defaultValues]
  * @param {string} [props.buttonText]

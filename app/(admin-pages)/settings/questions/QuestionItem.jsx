@@ -1,5 +1,5 @@
 import DeleteButton from '@/app/components/DeleteButton'
-import PencilSquare from '@/app/components/icons/PencilSquare'
+import EditButton from '@/app/components/EditButton'
 import useQuestionDetail from '@/app/hooks/useQuestionDetail'
 import { useCallback, useState } from 'react'
 import UpdateQuestionForm from './UpdateQuestionForm'
@@ -20,9 +20,7 @@ const QuestionItem = ({ question }) => {
       {!isEditing && (
         <div className='flex items-center justify-between'>
           <span>{question.question}</span>
-          <button onClick={() => setIsEditing(true)} title='Edit'>
-            <PencilSquare />
-          </button>
+          <EditButton onClick={() => setIsEditing(true)} title='Edit' />
         </div>
       )}
       {isEditing && questionDetail && (

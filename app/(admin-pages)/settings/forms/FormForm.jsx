@@ -1,8 +1,7 @@
 'use client'
 
 import Button from '@/app/components/Button'
-import CloseCircle from '@/app/components/icons/CloseCircle'
-import PlusCircle from '@/app/components/icons/PlusCircle'
+import AddButton from '@/app/components/CloseButton'
 import { inputClasses, labelClasses } from '@/app/components/Input_label'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -12,22 +11,18 @@ import { useFieldArray, useForm } from 'react-hook-form'
 
 /**
  * @param {object} props
- * @param {boolean} [props.showQuestions]
  * @param {boolean} props.resetOnSuccess
  * @param {(data: FormValues) => Promise<void>} props.onSubmit
  * @param {FormValues} [props.defaultValues]
  * @param {string} [props.buttonText]
- * @param {boolean} [props.trackQuestions]
  * @param {boolean} [props.onCancel]
  * @param {{ question: string, id: number }} [props.questions]
  */
 const QuestionForm = ({
-  showQuestions = true,
   resetOnSuccess,
   onSubmit,
   defaultValues,
   buttonText = 'Create',
-  trackQuestions = false,
   onCancel,
   questions,
 }) => {
@@ -37,7 +32,6 @@ const QuestionForm = ({
     formState: { isSubmitting },
     control,
     reset,
-    getValues,
   } = useForm({
     defaultValues: defaultValues ?? {
       revisionText: '',
@@ -56,7 +50,6 @@ const QuestionForm = ({
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
-        console.log(data)
         await onSubmit(data)
         if (resetOnSuccess) {
           reset()
@@ -75,62 +68,47 @@ const QuestionForm = ({
         ></textarea>
       </div>
 
-      {showQuestions && (
-        <fieldset>
-          <div className='flex items-center justify-between'>
-            <legend className={labelClasses}>Form questions</legend>
-            <button
-              title='Add question'
-              type='button'
-              onClick={() => append({ id: questions[0].id })}
-            >
-              <PlusCircle className='text-green-500' />
-            </button>
-          </div>
+      <fieldset>
+        <div className='flex items-center justify-between'>
+          <legend className={labelClasses}>Form questions</legend>
+          <AddButton
+            title='Add question'
+            type='button'
+            onClick={() => append({ id: questions[0].id })}
+          />
+        </div>
 
-          <div className='flex flex-col gap-2'>
-            {fields.map((field, index) => (
-              <div key={field.id} className='relative'>
-                <label hidden>Question {index + 1}</label>
-                <select
-                  id={`questions.${index}.id`}
-                  {...register(`questions.${index}.id`, {
-                    valueAsNumber: true,
-                  })}
-                  className={inputClasses}
-                  required
-                >
-                  {questions.map((q) => (
-                    <option key={q.id} value={q.id}>
-                      {q.question}
-                    </option>
-                  ))}
-                </select>
+        <div className='flex flex-col gap-2'>
+          {fields.map((field, index) => (
+            <div key={field.id} className='relative'>
+              <label hidden>Question {index + 1}</label>
+              <select
+                id={`questions.${index}.id`}
+                {...register(`questions.${index}.id`, {
+                  valueAsNumber: true,
+                })}
+                className={inputClasses}
+                required
+              >
+                {questions.map((q) => (
+                  <option key={q.id} value={q.id}>
+                    {q.question}
+                  </option>
+                ))}
+              </select>
 
-                {index > 0 && (
-                  <button
-                    onClick={() => {
-                      const questions = getValues('questions')
-                      const questionId = questions[index].id
-                      remove(index)
-                      if (!questionId || !trackQuestions) return
-                      setDeletedQuestionsIds([
-                        ...deletedQuestionsIds,
-                        questionId,
-                      ])
-                    }}
-                    className='absolute right-5 top-1/2 -translate-y-1/2 rounded-full flex items-center justify-center'
-                    title={`Remove question ${index + 1}`}
-                    type='button'
-                  >
-                    <CloseCircle className='text-red-500' />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-        </fieldset>
-      )}
+              {index > 0 && (
+                <AddButton
+                  onClick={() => remove(index)}
+                  className='absolute right-5 top-1/2 -translate-y-1/2'
+                  title={`Remove question ${index + 1}`}
+                  type='button'
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </fieldset>
 
       <div className='flex justify-end'>
         {onCancel && (

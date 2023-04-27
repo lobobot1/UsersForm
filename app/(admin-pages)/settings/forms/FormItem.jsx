@@ -1,5 +1,5 @@
 import DeleteButton from '@/app/components/DeleteButton'
-import PencilSquare from '@/app/components/icons/PencilSquare'
+import EditButton from '@/app/components/EditButton'
 import { useCallback, useState } from 'react'
 import UpdateFormForm from './UpdateFormForm'
 
@@ -19,9 +19,7 @@ const FormItem = ({ form, onDelete }) => {
       {!isEditing && (
         <div className='flex items-center justify-between'>
           <span>{form.revisionText}</span>
-          <button onClick={() => setIsEditing(true)} title='Edit'>
-            <PencilSquare />
-          </button>
+          <EditButton onClick={() => setIsEditing(true)} title='Edit' />
         </div>
       )}
       {isEditing && (

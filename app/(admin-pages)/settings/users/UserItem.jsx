@@ -1,4 +1,4 @@
-import PencilSquare from '@/app/components/icons/PencilSquare'
+import EditButton from '@/app/components/EditButton'
 import { useCallback, useState } from 'react'
 import UpdateUserForm from './UpdateUserForm'
 
@@ -15,9 +15,7 @@ const UserItem = ({ user }) => {
             {user.nickname} | {user.name} {user.lastname} |{' '}
             {user.isAdmin ? 'Admin' : 'User'}
           </span>
-          <button onClick={() => setIsEditing(true)} title='Edit'>
-            <PencilSquare />
-          </button>
+          <EditButton onClick={() => setIsEditing(true)} title='Edit' />
         </div>
       )}
       {isEditing && (

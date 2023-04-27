@@ -1,8 +1,7 @@
 'use client'
 
+import AddButton from '@/app/components/CloseButton'
 import Input_label from '@/app/components/Input_label'
-import CloseCircle from '@/app/components/icons/CloseCircle'
-import PlusCircle from '@/app/components/icons/PlusCircle'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -66,14 +65,12 @@ const QuestionForm = ({
         <fieldset className='flex flex-col gap-2'>
           <div className='flex items-center justify-between'>
             <legend>Possible answers</legend>
-            <button
+            <AddButton
               title='Add possible answer'
               type='button'
               className='mr-2'
               onClick={() => append({ value: '', isNew: true })}
-            >
-              <PlusCircle className='text-green-500' />
-            </button>
+            />
           </div>
 
           {fields.map((field, index) => (
@@ -89,7 +86,7 @@ const QuestionForm = ({
               <input hidden {...register(`answers.${index}.id`)} />
 
               {index > 0 && (
-                <button
+                <AddButton
                   onClick={() => {
                     const answers = getValues('answers')
                     const answerId = answers[index].id
@@ -97,12 +94,10 @@ const QuestionForm = ({
                     if (!answerId || !trackAnswers) return
                     setDeletedAnswersIds([...deletedAnswersIds, answerId])
                   }}
-                  className='absolute right-2 top-1/2 -translate-y-1/2 rounded-full flex items-center justify-center'
+                  className='absolute right-2 top-1/2 -translate-y-1/2'
                   title={`Remove answer ${index + 1}`}
                   type='button'
-                >
-                  <CloseCircle className='text-red-500' />
-                </button>
+                />
               )}
             </div>
           ))}
