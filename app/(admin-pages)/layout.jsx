@@ -1,6 +1,6 @@
 import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import { redirect } from 'next/navigation'
-import NavbarUser from './NavbarUser'
+import Navbar from './Navbar'
 
 export default function RootLayout({ children }) {
   const isLogged = isLoggedRequest()
@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
 
   return (
     <div className='flex flex-col'>
-      <NavbarUser />
+      <Navbar />
       <main className='container mx-auto grow'>{children}</main>
     </div>
   )

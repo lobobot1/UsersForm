@@ -6,7 +6,7 @@ export default function useUsers() {
   const swr = useSWR('/api/users', fetch)
 
   const createUser = useCallback(
-    /** @param {import('../(needs-auth)/settings/users/types').UserFormValues} data */
+    /** @param {import('../(admin-pages)/settings/users/types').UserFormValues} data */
     async (data) => {
       await fetch('/api/auth/register', {
         method: 'POST',
@@ -19,7 +19,7 @@ export default function useUsers() {
 
   const updateUser = useCallback(
     /**
-     * @param {import('../(needs-auth)/settings/users/types').UserFormValues} data
+     * @param {import('../(admin-pages)/settings/users/types').UserFormValues} data
      * @param {number} userId
      */
     async (data, userId) => {
