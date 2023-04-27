@@ -1,8 +1,9 @@
-import Form from '../../../components/form'
+
+import Form from '@/app/components/form'
 
 //const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({ children }) {
+export default function Home({ params }) {
   return (
     <main className='flex min-h-screen flex-col bg-[#0B132B]'>
       <div className='text-5xl text-white px-11 pt-11'>
@@ -30,7 +31,7 @@ export default function Home({ children }) {
           </div>
 
           <div className=' bg-slate-400 rounded-md p-6 w-[90%] drop-shadow-xl'>
-            <Form />
+            <Form id={params.id} />
           </div>
         </div>
       </div>
