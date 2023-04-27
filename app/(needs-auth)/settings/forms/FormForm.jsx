@@ -6,7 +6,7 @@ import { inputClasses, labelClasses } from '@/app/components/Input_label'
 import { useFieldArray, useForm } from 'react-hook-form'
 
 /**
- * @typedef {{ revisionText: string, questions: { id: number, isNew: true }[] }} FormValues
+ * @typedef {{ revisionText: string, questions: { id: number }[] }} FormValues
  */
 
 /**
@@ -61,7 +61,7 @@ const QuestionForm = ({
           reset()
         }
       })}
-      className='flex flex-col gap-3 max-w-sm'
+      className='flex flex-col gap-3'
     >
       <div className='flex flex-col'>
         <label htmlFor='revisionText' className={labelClasses}>
@@ -118,7 +118,7 @@ const QuestionForm = ({
                         questionId,
                       ])
                     }}
-                    className='absolute -right-2 translate-x-full top-1/2 -translate-y-1/2 rounded-full flex items-center justify-center'
+                    className='absolute right-5 top-1/2 -translate-y-1/2 rounded-full flex items-center justify-center'
                     title={`Remove question ${index + 1}`}
                     type='button'
                   >

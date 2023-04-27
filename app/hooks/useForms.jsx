@@ -19,7 +19,10 @@ export default function useForms() {
 
   const updateForm = useCallback(
     /**
-     * @param {{ form: string }} data
+     * @param {object} data
+     * @param {{ id: number }[]} data.questions
+     * @param {number} data.authorId
+     * @param {string} data.revisionText
      * @param {number} formId
      */
     async (data, formId) => {
