@@ -1,12 +1,16 @@
-import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
+import { isAdminRequestFront } from '@lib/auth/isAdminRequest'
+import { cookieOption } from '@lib/jwt'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Navbar from './Navbar'
 
-export default function RootLayout({ children }) {
-  const isLogged = isLoggedRequest()
+export default async function RootLayout({ children }) {
+  const cookieList = cookies()
+  const isAdmin = await isAdminRequestFront(cookieList.get(cookieOption.name))
+  console.log(isAdmin)
 
-  if (!isLogged) {
-    redirect('/login')
+  if (!isAdmin) {
+    redirect('/user')
   }
 
   return (
