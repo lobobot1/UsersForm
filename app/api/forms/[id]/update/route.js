@@ -1,6 +1,10 @@
-import isNumber from '@/util/isNumber'
 import isUUID from '@/util/isUUId'
-import { invalidUrlParam, somePrismaError } from '@lib/http/ErrorHandler'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
+import {
+  invalidUrlParam,
+  somePrismaError,
+  unauthorized,
+} from '@lib/http/ErrorHandler'
 import { successUpdateResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
@@ -13,6 +17,8 @@ import { NextRequest, NextResponse } from 'next/server'
  * @returns { Promise<NextResponse> }
  */
 export async function PUT(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'update forms' })
+
   const { id } = params
 
   if (!isUUID(id)) return invalidUrlParam()

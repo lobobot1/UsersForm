@@ -1,9 +1,11 @@
 import isNumber from '@/util/isNumber'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import {
   cantDoThatResponse,
   invalidUrlParam,
   someFieldMissing,
   somePrismaError,
+  unauthorized,
 } from '@lib/http/ErrorHandler'
 import { successUpdateResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
@@ -17,6 +19,8 @@ const { REVISED_STATUS } = process.env
  * @returns { Promise<NextResponse> }
  */
 export async function PUT(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'update questions' })
+
   const { id } = params
 
   if (!isNumber(id)) return invalidUrlParam()

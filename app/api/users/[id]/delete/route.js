@@ -10,11 +10,12 @@ import { successDeleteResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 
 export async function DELETE(request, { params }) {
+  if (!(await isAdminRequest(request)))
+    return unauthorized({ entity: 'delete user' })
+
   const { id } = params
   if (!isNumber(id)) return invalidUrlParam()
 
-  if (!(await isAdminRequest(request)))
-    return unauthorized({ entity: 'delete user' })
   try {
     const body = await request.json()
     if (!body.mail || !body.reMail) return someFieldMissing()

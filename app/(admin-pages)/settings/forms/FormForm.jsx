@@ -1,5 +1,6 @@
 'use client'
 
+import Button from '@/app/components/Button'
 import CloseCircle from '@/app/components/icons/CloseCircle'
 import PlusCircle from '@/app/components/icons/PlusCircle'
 import { inputClasses, labelClasses } from '@/app/components/Input_label'
@@ -133,25 +134,22 @@ const QuestionForm = ({
 
       <div className='flex justify-end'>
         {onCancel && (
-          <button
+          <Button
             type='button'
-            className='bg-red-500 text-white rounded-md py-1 px-2 hover:bg-red-400'
+            variant='danger'
+            className='mr-auto'
             onClick={() => {
               onCancel()
               reset()
             }}
           >
             Cancel
-          </button>
+          </Button>
         )}
 
-        <button
-          type='submit'
-          className='bg-blue-500 text-white disabled:bg-gray-400 rounded-md py-1 px-2 hover:bg-blue-400 ml-auto'
-          disabled={isSubmitting}
-        >
+        <Button type='submit' disabled={isSubmitting}>
           {buttonText}
-        </button>
+        </Button>
       </div>
     </form>
   )

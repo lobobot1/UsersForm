@@ -1,5 +1,6 @@
 import isNumber from '@/util/isNumber'
-import isAdminRequest from '@lib/auth/isAdminRequest'
+import isAdminRequest, { getCookieId } from '@lib/auth/isAdminRequest'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import { encryptToSaveDB } from '@lib/crypt'
 import {
   fatality,
@@ -19,17 +20,30 @@ import { NextRequest } from 'next/server'
  * @param { object } context.params
  */
 export async function PUT(request, { params }) {
-  const { id } = params
-  if (!isNumber(id)) return invalidUrlParam()
-
+  if (!isLoggedRequest()) return unauthorized({ entity: 'update users' })
+  
+  const isAdmin = await isAdminRequest(request)
+  
   try {
+    const { id } = params
+    if (!isNumber(id)) return invalidUrlParam()
+
+    const userIdCookie = getCookieId(request)
+    const userId = await prisma.user.findUnique({
+      where: { id: userIdCookie },
+      select: { id: true },
+    })
+
+    if (!isAdmin && !(userId.id === id))
+      return unauthorized({ entity: 'update this user' })
+
     const body = await request.json()
 
     /** change password check */
     const adminData = {}
     if (body?.password || body?.rePassword) {
-      if (!isAdminRequest(request))
-        return unauthorized({ entity: 'change password' })
+      if (!isAdmin) return unauthorized({ entity: 'change password' })
+
       const { password, rePassword } = body
 
       if (!(password === rePassword))

@@ -1,9 +1,16 @@
 import isNumber from '@/util/isNumber'
-import { cantDoThatResponse, invalidUrlParam } from '@lib/http/ErrorHandler'
+import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
+import {
+  cantDoThatResponse,
+  invalidUrlParam,
+  unauthorized,
+} from '@lib/http/ErrorHandler'
 import { successDeleteResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 
 export async function DELETE(request, { params }) {
+  if (!isLoggedRequest()) return unauthorized({ entity: 'delete questions' })
+
   const { id } = params
 
   if (!isNumber(id)) return invalidUrlParam()
