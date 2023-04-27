@@ -48,11 +48,30 @@ export async function POST(request) {
   const lastname =
     body?.lastname && body?.lastname !== '' ? body?.lastname : null
 
+  /** validate unique nickname */
+  if (nickname) {
+    const nicknames = await prisma.user.count({
+      where: { nickname },
+    })
+
+    if (nicknames > 0)
+      return someFieldMissing({ message: 'nickname is already used' })
+  }
   /** check if it's an valid email */
   const isEmail = emailRegex.test(email)
 
   if (!isEmail) {
     return someFieldMissing({ message: 'wrong email address' })
+  }
+
+  /** validate unique email */
+  if (email) {
+    const emails = await prisma.user.count({
+      where: { email },
+    })
+
+    if (emails > 0)
+      return someFieldMissing({ message: 'e-mail is already used' })
   }
 
   /** check if password matches */
