@@ -1,5 +1,6 @@
 'use client'
 
+import Button from '@/app/components/Button'
 import Input_label, { labelClasses } from '@/app/components/Input_label'
 import { getDirtyFields } from '@/util/getDirtyFields'
 import { useForm } from 'react-hook-form'
@@ -103,25 +104,21 @@ const QuestionUser = ({
 
       <div className='flex justify-end'>
         {onCancel && (
-          <button
+          <Button
             type='button'
-            className='bg-red-500 text-white rounded-md py-1 px-2 hover:bg-red-400'
+            variant='danger'
             onClick={() => {
               onCancel()
               reset()
             }}
           >
             Cancel
-          </button>
+          </Button>
         )}
 
-        <button
-          type='submit'
-          className='bg-blue-500 text-white disabled:bg-gray-400 rounded-md py-1 px-2 hover:bg-blue-400 ml-auto'
-          disabled={isSubmitting}
-        >
+        <Button type='submit' className='ml-auto' disabled={isSubmitting}>
           {buttonText}
-        </button>
+        </Button>
       </div>
     </form>
   )
