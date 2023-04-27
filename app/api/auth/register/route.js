@@ -87,7 +87,7 @@ export async function POST(request) {
     lastname,
     nickname,
     password: encryptedPassword,
-    isAdmin: false,
+    isAdmin: body?.isAdmin ?? false,
   }
   try {
     const resultCreated = await prisma.user.create({ data: newUser })
