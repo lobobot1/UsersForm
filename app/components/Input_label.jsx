@@ -8,11 +8,15 @@ export const labelClasses = 'mb-2 text-lg font-normal'
 
 /** @type {import('react').ForwardRefRenderFunction<HTMLInputElement, InputProps>} */
 const Input_label = forwardRef(
-  ({ label, id, name, hideLabel = false, type = 'text', ...props }, ref) => {
+  (
+    { label, id, name, hideLabel = false, type = 'text', required, ...props },
+    ref
+  ) => {
     return (
       <div className='flex flex-col'>
         <label htmlFor={id || name} className={labelClasses} hidden={hideLabel}>
           {label}
+          {required && <span className='text-red-500 ml-1'>*</span>}
         </label>
 
         <input
@@ -21,6 +25,7 @@ const Input_label = forwardRef(
           id={id || name}
           name={name}
           className={inputClasses}
+          required={required}
           {...props}
         />
       </div>
