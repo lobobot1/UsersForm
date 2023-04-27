@@ -31,10 +31,8 @@ export async function POST(request) {
 
   const body = await request.json()
 
-  const { nickname, email, name, password, rePassword } = body
+  const { email, name, password, rePassword } = body
   if (
-    !nickname ||
-    nickname == '' ||
     !name ||
     name == '' ||
     !password ||
@@ -47,7 +45,8 @@ export async function POST(request) {
   /** if there is a lastname or not, we assign it */
   const lastname =
     body?.lastname && body?.lastname !== '' ? body?.lastname : null
-
+  const nickname =
+    body?.nickname && body?.nickname !== '' ? body?.nickname : null
   /** validate unique nickname */
   if (nickname) {
     const nicknames = await prisma.user.count({
