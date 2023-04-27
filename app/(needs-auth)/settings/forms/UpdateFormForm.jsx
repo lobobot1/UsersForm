@@ -37,6 +37,7 @@ const UpdateFormForm = ({ form, onSubmit, onCancel }) => {
           onCancel={onCancel}
           questions={questions.data}
           defaultValues={form}
+          buttonText='Update'
         />
       )}
     </>
