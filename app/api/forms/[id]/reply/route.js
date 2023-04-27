@@ -4,10 +4,36 @@ import {
   someFieldMissing,
   somePrismaError,
 } from '@lib/http/ErrorHandler'
-import { successRetrieveResponse } from '@lib/http/ResponseHandler'
+import {
+  successRetrieveResponse,
+  successUpdateResponse,
+} from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 import { NextRequest } from 'next/server'
 const { ANSWERED_STATUS } = process.env
+const select = {
+  id: true,
+  FormAnswered: {
+    select: {
+      id: true,
+      answer: true,
+      question: {
+        select: {
+          id: true,
+          question: true,
+        },
+      },
+      createdAt: true,
+      updatedAt: true,
+      status: {
+        select: {
+          id: true,
+          status: true,
+        },
+      },
+    },
+  },
+}
 /**
  *
  * @param { NextRequest } request
@@ -41,29 +67,7 @@ export async function POST(request, { params }) {
 
     /** retrieve form data filtering by formAsweredIds */
     const data = await prisma.form.findFirst({
-      select: {
-        id: true,
-        FormAnswered: {
-          select: {
-            id: true,
-            answer: true,
-            question: {
-              select: {
-                id: true,
-                question: true,
-              },
-            },
-            createdAt: true,
-            updatedAt: true,
-            status: {
-              select: {
-                id: true,
-                status: true,
-              },
-            },
-          },
-        },
-      },
+      select,
       where: {
         AND: [
           { id },
@@ -81,6 +85,62 @@ export async function POST(request, { params }) {
     if (!data) return fatality()
 
     return successRetrieveResponse({ data })
+  } catch (error) {
+    console.log({ error })
+    return somePrismaError(error)
+  }
+}
+
+/**
+ *
+ * @param { NextRequest } request
+ * @param { object } context
+ * @param { object } context.params
+ */
+export async function PUT(request, { params }) {
+  const { id } = params
+
+  const { answers, status } = validateBody(await request.json())
+
+  try {
+    /** Prepare update formAnswered transactions */
+    const asyncData = answers.map(({ answer, id }) =>
+      prisma.formAnswered.update({
+        data: {
+          answer,
+          statusId: status?.id ?? Number(UPDATED_STATUS),
+        },
+        where: { id },
+        select: {
+          id: true,
+        },
+      })
+    )
+
+    /** execute transactions */
+    const syncData = await prisma.$transaction(asyncData)
+    const formAnsweredIds = syncData.map((formAnswer) => formAnswer.id)
+
+    /** retrieve form data filtering by formAsweredIds */
+    const data = await prisma.form.findFirst({
+      select,
+      where: {
+        AND: [
+          { id },
+          {
+            FormAnswered: {
+              some: {
+                AND: [{ id: { in: formAnsweredIds } }],
+              },
+            },
+          },
+        ],
+      },
+    })
+
+    if (!data) return fatality()
+
+    return successUpdateResponse({ data, entity: 'formAnwer' })
   } catch (error) {
     console.log({ error })
     return somePrismaError(error)
