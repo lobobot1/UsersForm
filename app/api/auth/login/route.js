@@ -13,7 +13,6 @@ import { failedLogin, fatality } from '@lib/http/ErrorHandler'
 /**
  *
  * @param { NextRequest } request
- * @param { import("next").NextPageContext } context
  */
 export async function POST(request) {
   /**
