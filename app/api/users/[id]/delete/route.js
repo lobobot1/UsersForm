@@ -25,7 +25,7 @@ export async function DELETE(request, { params }) {
     })
 
     if (!(body.email === body.reMail) && !(body.email === user.email))
-      return someFieldMissing({ message: 'not match correct email.' })
+      return someFieldMissing({ message: 'not match email' })
 
     await prisma.user.delete({ where: { id: Number(id) } })
     return successDeleteResponse({ entity: 'user' })
