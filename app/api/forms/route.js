@@ -1,6 +1,6 @@
 import isAdminRequest from '@lib/auth/isAdminRequest'
 import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
-import { fatality } from '@lib/http/ErrorHandler'
+import { fatality, unauthorized } from '@lib/http/ErrorHandler'
 import { successListResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 import { NextRequest } from 'next/server'
