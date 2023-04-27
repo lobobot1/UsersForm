@@ -1,9 +1,8 @@
-import { useCallback, useRef, useState } from 'react'
-import UpdateQuestionForm from './UpdateQuestionForm'
-import useQuestionDetail from '@/app/hooks/useQuestionDetail'
+import DeleteButton from '@/app/components/DeleteButton'
 import PencilSquare from '@/app/components/icons/PencilSquare'
-import Trash from '@/app/components/icons/Trash'
-import Spinner from '@/app/components/Spinner'
+import useQuestionDetail from '@/app/hooks/useQuestionDetail'
+import { useCallback, useState } from 'react'
+import UpdateQuestionForm from './UpdateQuestionForm'
 
 /** @param {{ question: { id: number, question: string } }} props */
 const QuestionItem = ({ question }) => {
@@ -28,22 +27,11 @@ const QuestionItem = ({ question }) => {
       )}
       {isEditing && questionDetail && (
         <>
-          <button
-            className='absolute right-2 top-2 text-red-500 disabled:text-red-300'
-            title='Eliminar'
-            onClick={async () => {
-              if (!confirm('Are you sure you want to delete this question?'))
-                return
-              try {
-                await deleteQuestion()
-              } catch (error) {
-                alert(error.message)
-              }
-            }}
-            disabled={isDeleting}
-          >
-            {isDeleting ? <Spinner /> : <Trash />}
-          </button>
+          <DeleteButton
+            entity='question'
+            onConfirm={async () => await deleteQuestion()}
+            isDeleting={isDeleting}
+          />
           <UpdateQuestionForm
             question={{
               question: question.question,
