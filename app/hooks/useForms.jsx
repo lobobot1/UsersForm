@@ -35,5 +35,14 @@ export default function useForms() {
     [swr]
   )
 
-  return { ...swr, forms: swr.data, createForm, updateForm }
+  const deleteForm = useCallback(
+    /** @param {number} formId */
+    async (formId) => {
+      await fetch(`/api/forms/${formId}/delete`, { method: 'DELETE' })
+      await swr.mutate()
+    },
+    [swr]
+  )
+
+  return { ...swr, forms: swr.data, createForm, updateForm, deleteForm }
 }
