@@ -1,8 +1,13 @@
 import isUUID from '@/util/isUUId'
-import { invalidUrlParam, somePrismaError } from '@lib/http/ErrorHandler'
+import {
+  fatality,
+  invalidUrlParam,
+  somePrismaError,
+} from '@lib/http/ErrorHandler'
+import { successDeleteResponse } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 import { NextRequest } from 'next/server'
-const { REVISED_STATUS } = process.env
+const { CREATED_STATUS } = process.env
 /**
  * @param { NextRequest } request
  * @param { object } context
@@ -19,7 +24,7 @@ export async function DELETE(request, { params }) {
         FormAnswered: {
           some: {
             NOT: {
-              statusId: Number(REVISED_STATUS),
+              statusId: Number(CREATED_STATUS),
             },
           },
         },
@@ -28,16 +33,26 @@ export async function DELETE(request, { params }) {
         _count: true,
       },
     })
+
     if (review) {
       const count = Object.values(review['_count']).reduce(
         (prev, val) => (prev += val ?? 0),
         0
       )
       if (count > 0) {
-        return cantDoThatResponse({ entity: 'question', action: 'delete' })
+        return cantDoThatResponse({ entity: 'form', action: 'delete' })
       }
     }
     console.log({ review })
+    const data = await prisma.form.delete({
+      where: {
+        id,
+      },
+    })
+
+    if (!data) return fatality()
+
+    return successDeleteResponse({ entity: 'form' })
   } catch (error) {
     console.log({ error })
     return somePrismaError(error)
