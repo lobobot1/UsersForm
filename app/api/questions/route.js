@@ -16,6 +16,7 @@ export async function GET() {
     select: {
       id: true,
       question: true,
+      topic: { select: { id: true, topic: true } },
       updatedAt: true,
       createdAt: true,
     },

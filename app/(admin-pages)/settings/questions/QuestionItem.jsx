@@ -1,3 +1,4 @@
+import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
 import useQuestionDetail from '@/app/hooks/useQuestionDetail'
@@ -19,16 +20,21 @@ const QuestionItem = ({ question }) => {
       {isLoading && <p>Loading...</p>}
       {!isEditing && (
         <div className='flex items-center justify-between'>
-          <span>{question.question}</span>
+          <span className='line-clamp-1'>{question.question}</span>
           <EditButton onClick={() => setIsEditing(true)} title='Edit' />
         </div>
       )}
       {isEditing && questionDetail && (
         <>
+          <CloseButton
+            className='absolute right-2 top-2'
+            onClick={closeEditForm}
+          />
           <DeleteButton
             entity='question'
             onConfirm={async () => await deleteQuestion()}
             isDeleting={isDeleting}
+            className='absolute bottom-3 left-3'
           />
           <UpdateQuestionForm
             question={{
@@ -38,9 +44,9 @@ const QuestionItem = ({ question }) => {
                 id: pa.id,
                 value: pa.answer,
               })),
+              topicId: question.topic?.id,
             }}
             onSubmit={closeEditForm}
-            onCancel={closeEditForm}
           />
         </>
       )}

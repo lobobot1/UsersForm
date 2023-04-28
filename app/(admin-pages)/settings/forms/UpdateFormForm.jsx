@@ -1,18 +1,17 @@
 'use client'
-import useForms from '@/app/hooks/useForms'
-import FormForm from './FormForm'
 import ErrorAlert from '@/app/components/ErrorAlert'
-import { useState } from 'react'
+import useForms from '@/app/hooks/useForms'
 import useQuestions from '@/app/hooks/useQuestions'
+import { useState } from 'react'
+import FormForm from './FormForm'
 
 /**
  * @param {{
  *  form: { id: string, revisionText: string, questions: { id: number }[] }
  *  onSubmit?: () => void
- *  onCancel?: () => void
  * }} props
  */
-const UpdateFormForm = ({ form, onSubmit, onCancel }) => {
+const UpdateFormForm = ({ form, onSubmit }) => {
   const [error, setError] = useState(null)
   const { updateForm } = useForms()
   const { questions } = useQuestions()
@@ -34,7 +33,6 @@ const UpdateFormForm = ({ form, onSubmit, onCancel }) => {
               }
             }
           }}
-          onCancel={onCancel}
           questions={questions.data}
           defaultValues={form}
           buttonText='Update'

@@ -6,7 +6,7 @@ export default function useUsers() {
   const swr = useSWR('/api/users', fetch)
 
   const createUser = useCallback(
-    /** @param {import('../(admin-pages)/settings/users/types').UserFormValues} data */
+    /** @param {import('../(admin-pages)/settings/users/types').UserUserValues} data */
     async (data) => {
       await fetch('/api/auth/register', {
         method: 'POST',
@@ -19,7 +19,7 @@ export default function useUsers() {
 
   const updateUser = useCallback(
     /**
-     * @param {import('../(admin-pages)/settings/users/types').UserFormValues} data
+     * @param {import('../(admin-pages)/settings/users/types').UserUserValues} data
      * @param {number} userId
      */
     async (data, userId) => {
@@ -32,5 +32,14 @@ export default function useUsers() {
     [swr]
   )
 
-  return { ...swr, users: swr.data, createUser, updateUser }
+  const deleteUser = useCallback(
+    /** @param {number} userId */
+    async (userId) => {
+      await fetch(`/api/users/${userId}/delete`, { method: 'DELETE' })
+      await swr.mutate()
+    },
+    [swr]
+  )
+
+  return { ...swr, users: swr.data, createUser, updateUser, deleteUser }
 }

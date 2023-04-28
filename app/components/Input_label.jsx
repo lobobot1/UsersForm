@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 
 export const inputClasses =
   'text-black focus:outline-none focus:border-cyan-500 py-1 pl-2 rounded-md border-2 border-gray-300 w-full'
-export const labelClasses = 'mb-2 text-lg font-normal'
+export const labelClasses = 'mb-1 font-medium'
 
 /** @typedef {{ label: string, hideLabel?: boolean } & import('react').ComponentPropsWithRef<'input'>} InputProps */
 

@@ -12,7 +12,7 @@ export default function useQuestions() {
     async (data) => {
       const res = await fetch('/api/questions/create', {
         method: 'POST',
-        body: { question: data.question },
+        body: data,
       })
 
       const promises = data.answers.map(

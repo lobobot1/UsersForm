@@ -28,6 +28,7 @@ export async function GET(request) {
         select: {
           id: true,
           question: true,
+          topic: { select: { id: true, topic: true } },
           PossibleAnswer: {
             select: {
               id: true,
