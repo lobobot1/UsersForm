@@ -24,6 +24,8 @@ async function Main() {
   if (await formStatus()) console.log('📃 Form States Created ✔')
 
   if (await firstAdmin()) console.log('👨‍💻 Administrator User Created ✔')
+
+  if (await questionsTopics()) console.log('📚 Questions TOpics Created ✔')
 }
 
 async function firstAdmin() {
@@ -59,12 +61,38 @@ async function formStatus() {
     { id: 6, status: 'updated' },
   ]
   return Boolean(
-    Promise.all(
+    await Promise.all(
       status.map(async (data) => await prisma.status.create({ data }))
     )
   )
 }
+async function questionsTopics() {
+  console.log('Generating questions topics... ')
+  /** Seed question Topics */
+  const topics = [
+    {
+      topic: 'Feedback Topics',
+    },
+    {
+      topic: 'Product Topics',
+    },
+    {
+      topic: 'Seller Topics',
+    },
+    {
+      topic: 'Helpful Topics',
+    },
+    {
+      topic: 'Sentiment Topics',
+    },
+  ]
 
+  return Boolean(
+    await Promise.all(
+      topics.map(async (data) => await prisma.topic.create({ data }))
+    )
+  )
+}
 /**
  *  Encrypt function, return an string hashed with *HmacSHA256*
  * @param {string} msg  HmacSHA256
