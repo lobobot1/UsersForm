@@ -63,6 +63,7 @@ const QuestionForm = ({
 
       <XSelect
         label='Question topic'
+        required
         {...register('topicId', { valueAsNumber: true })}
       >
         {topics.data.map((t) => (
