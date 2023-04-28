@@ -13,8 +13,10 @@ const Page = async () => {
         <UserList />
       </div>
 
-      <div className='w-full max-w-xs'>
-        <h2 className='text-xl font-bold mb-3'>Create a new user</h2>
+      <div className='w-full lg:max-w-xs'>
+        <h2 className='text-xl font-bold mb-3 mt-3 lg:mt-0'>
+          Create a new user
+        </h2>
         <div className='bg-white p-2 text-black rounded-md'>
           <CreateUserForm />
         </div>
