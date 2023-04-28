@@ -1,18 +1,22 @@
 import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
+import Clone from '@/app/components/icons/Clone'
+import Spinner from '@/app/components/Spinner'
 import { useCallback, useState } from 'react'
 import UpdateFormForm from './UpdateFormForm'
 
 /**
  * @param {{
  *  form: { id: number, form: string },
- *  onDelete: (id: number) => Promise<void>
+ *  onDelete: (id: number) => Promise<void>,
+ *  onClone: (form) => Promise<void>
  * }} props
  */
-const FormItem = ({ form, onDelete }) => {
+const FormItem = ({ form, onDelete, onClone }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isCloning, setIsCloning] = useState(false)
   const closeEditForm = useCallback(() => setIsEditing(false), [])
 
   return (
@@ -20,7 +24,28 @@ const FormItem = ({ form, onDelete }) => {
       {!isEditing && (
         <div className='flex items-center justify-between'>
           <span>{form.revisionText}</span>
-          <EditButton onClick={() => setIsEditing(true)} title='Edit' />
+          <div className='flex gap-2'>
+            <button
+              className='flex items-center justify-center disabled:text-gray-500'
+              disabled={isCloning}
+              onClick={async () => {
+                setIsCloning(true)
+                try {
+                  await onClone({
+                    revisionText: form.revisionText + ' COPY',
+                    questions: form.question.map((q) => ({ id: q.id })),
+                  })
+                } catch (error) {
+                  alert(error.message)
+                } finally {
+                  setIsCloning(false)
+                }
+              }}
+            >
+              {isCloning ? <Spinner /> : <Clone />}
+            </button>
+            <EditButton onClick={() => setIsEditing(true)} title='Edit' />
+          </div>
         </div>
       )}
       {isEditing && (
