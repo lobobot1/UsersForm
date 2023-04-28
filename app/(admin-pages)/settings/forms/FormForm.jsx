@@ -1,7 +1,8 @@
 'use client'
 
+import AddButton from '@/app/components/AddButton'
 import Button from '@/app/components/Button'
-import AddButton from '@/app/components/CloseButton'
+import CloseButton from '@/app/components/CloseButton'
 import { inputClasses, labelClasses } from '@/app/components/Input_label'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -98,7 +99,7 @@ const QuestionForm = ({
               </select>
 
               {index > 0 && (
-                <AddButton
+                <CloseButton
                   onClick={() => remove(index)}
                   className='absolute right-5 top-1/2 -translate-y-1/2'
                   title={`Remove question ${index + 1}`}

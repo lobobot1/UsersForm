@@ -1,6 +1,7 @@
 'use client'
 
-import AddButton from '@/app/components/CloseButton'
+import AddButton from '@/app/components/AddButton'
+import CloseButton from '@/app/components/CloseButton'
 import Input_label from '@/app/components/Input_label'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
@@ -86,7 +87,7 @@ const QuestionForm = ({
               <input hidden {...register(`answers.${index}.id`)} />
 
               {index > 0 && (
-                <AddButton
+                <CloseButton
                   onClick={() => {
                     const answers = getValues('answers')
                     const answerId = answers[index].id
