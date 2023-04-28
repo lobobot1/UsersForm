@@ -2,8 +2,104 @@ const { PrismaClient } = require('@prisma/client')
 const fs = require('fs').promises
 
 const CryptoJS = require('crypto-js')
-const prisma = new PrismaClient()
-
+const prisma = new PrismaClient({})
+const questions = [
+  {
+    id: 1,
+    question: 'Link to Item',
+  },
+  {
+    id: 2,
+    question: 'Free Text Comments',
+  },
+  {
+    id: 3,
+    topicId: 1,
+    question: "Feedback's main topic",
+  },
+  {
+    id: 4,
+    topicId: 1,
+    question: 'Contains Reasons',
+  },
+  {
+    id: 5,
+    topicId: 2,
+    question: "Description of item, it's parts or properties",
+  },
+  {
+    id: 6,
+    topicId: 2,
+    question: 'Price',
+  },
+  {
+    id: 7,
+    topicId: 2,
+    question: 'Experience Using it',
+  },
+  {
+    id: 8,
+    topicId: 1,
+    question: 'General opinion on item',
+  },
+  {
+    id: 9,
+    topicId: 3,
+    question: 'Match the description by the seller',
+  },
+  {
+    id: 10,
+    topicId: 3,
+    question: 'Packaging',
+  },
+  {
+    id: 11,
+    topicId: 3,
+    question: 'Shipping',
+  },
+  {
+    id: 12,
+    topicId: 3,
+    question: 'Communication',
+  },
+  {
+    id: 13,
+    topicId: 3,
+    question: 'Previous experience with the seller',
+  },
+  {
+    id: 14,
+    topicId: 3,
+    question: 'General opinion on seller',
+  },
+  {
+    id: 15,
+    topicId: 4,
+    question: 'How helpful is this feedback regarding the seller?',
+  },
+  {
+    id: 16,
+    topicId: 4,
+    question:
+      'Why did you find the feedback helpful or not helpful? [regarding the seller]',
+  },
+  {
+    id: 17,
+    topicId: 4,
+    question: 'How helpful is this feedback regarding the item?',
+  },
+  {
+    id: 18,
+    topicId: 5,
+    question:
+      'Why did you find the feedback helpful or not helpful? [regarding the item]',
+  },
+  {
+    id: 19,
+    topicId: 5,
+    question: 'Sentiment of feedback',
+  },
+]
 /** Execute Seeder */
 Main()
   .then(async () => await prisma.$disconnect())
@@ -25,7 +121,11 @@ async function Main() {
 
   if (await firstAdmin()) console.log('👨‍💻 Administrator User Created ✔')
 
-  if (await questionsTopics()) console.log('📚 Questions TOpics Created ✔')
+  if (await questionsTopics()) console.log('📚 Questions Topics Created ✔')
+
+  if (await firstQuestions()) console.log('🔍 Questions Created ✔')
+
+  if (await firstPossibleAnswers()) console.log('🖊️ Possible Answers Created ✔')
 }
 
 async function firstAdmin() {
@@ -71,18 +171,23 @@ async function questionsTopics() {
   /** Seed question Topics */
   const topics = [
     {
+      id: 1,
       topic: 'Feedback Topics',
     },
     {
+      id: 2,
       topic: 'Product Topics',
     },
     {
+      id: 3,
       topic: 'Seller Topics',
     },
     {
+      id: 4,
       topic: 'Helpful Topics',
     },
     {
+      id: 5,
       topic: 'Sentiment Topics',
     },
   ]
@@ -93,6 +198,127 @@ async function questionsTopics() {
     )
   )
 }
+
+async function firstQuestions() {
+  console.log('Generating questions... ')
+  /** Seed first questions */
+
+  return Boolean(
+    await Promise.all(
+      questions.map(async (data) => await prisma.question.create({ data }))
+    )
+  )
+}
+
+async function firstPossibleAnswers() {
+  /** Seed First Possible Answers */
+  console.log('Generating possible answers... ')
+  try {
+    const answers = [
+      {
+        questionId: 3,
+        answers: [
+          {
+            answer: 'mostly about the seller',
+          },
+          {
+            answer: 'mostly about the item',
+          },
+          {
+            answer: 'equally about both seller and item',
+          },
+          {
+            answer: 'does not contain any useful information',
+          },
+        ],
+      },
+      {
+        questionId: 4,
+        answers: [
+          {
+            answer: 'No information',
+          },
+          {
+            answer: 'Only General sentences',
+          },
+          {
+            answer: 'Only 1 sentence with detail',
+          },
+          {
+            answer: '2+ sentences with details',
+          },
+        ],
+      },
+      {
+        topicId: [2, 3],
+        answers: [
+          {
+            answer: 'yes',
+          },
+          {
+            answer: 'no',
+          },
+        ],
+      },
+      {
+        topicId: [4],
+        answers: [
+          {
+            answer: '0 - not helpful to anyone',
+          },
+          {
+            answer: '1 - can be helpful',
+          },
+          {
+            answer: '2 - helpful',
+          },
+          {
+            answer: '3 - very helpful',
+          },
+        ],
+      },
+
+      {
+        topicId: [5],
+        answers: [
+          {
+            answer: 'Positive',
+          },
+          {
+            answer: 'Negative',
+          },
+          {
+            answer: 'Mixed positive and negative',
+          },
+          {
+            answer: 'Neutrual',
+          },
+        ],
+      },
+    ]
+    for (let section of answers) {
+      const { answers, questionId, topicId } = section
+      if (questionId) {
+        for (let { answer } of answers) {
+          await createAnswer({ answer, id: questionId })
+        }
+      } else if (topicId) {
+        for (let question of questions) {
+          if (topicId.includes(question?.topicId)) {
+            for (let { answer } of answers) {
+              await createAnswer({ answer, id: question.id })
+            }
+          }
+        }
+      }
+    }
+    return true
+  } catch (error) {
+    console.error({ error })
+    return false
+  }
+}
+
 /**
  *  Encrypt function, return an string hashed with *HmacSHA256*
  * @param {string} msg  HmacSHA256
@@ -104,4 +330,10 @@ function encryptToSaveDB(msg, secret) {
     throw new Error('Not SECRET encrypt environment variables configured')
   const k = secret
   return CryptoJS.HmacSHA256(CryptoJS.SHA256(msg).toString(), k).toString()
+}
+
+async function createAnswer({ id, answer }) {
+  return await prisma.possibleAnswer.create({
+    data: { answer, question: { connect: { id } } },
+  })
 }
