@@ -8,10 +8,9 @@ import UserForm from './UserForm'
  * @param {{
  *  user: import('./types').User
  *  onSubmit?: () => void
- *  onCancel?: () => void
  * }} props
  */
-const UpdateUserForm = ({ user, onSubmit, onCancel }) => {
+const UpdateUserForm = ({ user, onSubmit }) => {
   const [error, setError] = useState(null)
   const { updateUser } = useUsers()
 
@@ -30,7 +29,6 @@ const UpdateUserForm = ({ user, onSubmit, onCancel }) => {
             }
           }
         }}
-        onCancel={onCancel}
         defaultValues={{ ...user, isAdmin: user.isAdmin.toString() }}
         buttonText='Update'
         requirePassword={false}

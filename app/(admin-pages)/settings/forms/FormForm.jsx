@@ -18,7 +18,6 @@ import { useFieldArray, useForm } from 'react-hook-form'
  * @param {(data: FormValues) => Promise<void>} props.onSubmit
  * @param {FormValues} [props.defaultValues]
  * @param {string} [props.buttonText]
- * @param {boolean} [props.onCancel]
  * @param {{ question: string, id: number }} [props.questions]
  */
 const QuestionForm = ({
@@ -26,7 +25,6 @@ const QuestionForm = ({
   onSubmit,
   defaultValues,
   buttonText = 'Create',
-  onCancel,
   questions,
 }) => {
   const {
@@ -105,20 +103,6 @@ const QuestionForm = ({
       </fieldset>
 
       <div className='flex justify-end'>
-        {onCancel && (
-          <Button
-            type='button'
-            variant='danger'
-            className='mr-auto'
-            onClick={() => {
-              onCancel()
-              reset()
-            }}
-          >
-            Cancel
-          </Button>
-        )}
-
         <Button type='submit' disabled={isSubmitting}>
           {buttonText}
         </Button>

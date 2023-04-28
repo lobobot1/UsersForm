@@ -1,3 +1,4 @@
+import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
 import { useCallback, useState } from 'react'
@@ -24,6 +25,10 @@ const FormItem = ({ form, onDelete }) => {
       )}
       {isEditing && (
         <>
+          <CloseButton
+            className='absolute right-2 top-2'
+            onClick={closeEditForm}
+          />
           <DeleteButton
             entity='form'
             onConfirm={async () => {
@@ -32,6 +37,7 @@ const FormItem = ({ form, onDelete }) => {
               setIsDeleting(false)
             }}
             isDeleting={isDeleting}
+            className='absolute bottom-3 left-3'
           />
           <UpdateFormForm
             form={{
@@ -40,7 +46,6 @@ const FormItem = ({ form, onDelete }) => {
               questions: form.question.map((q) => ({ id: q.id })),
             }}
             onSubmit={closeEditForm}
-            onCancel={closeEditForm}
           />
         </>
       )}

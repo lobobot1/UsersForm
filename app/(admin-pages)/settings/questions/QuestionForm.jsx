@@ -103,19 +103,6 @@ const QuestionForm = ({
       </fieldset>
 
       <div className='flex justify-end'>
-        {onCancel && (
-          <button
-            type='button'
-            className='bg-red-500 text-white rounded-md py-1 px-2 hover:bg-red-400'
-            onClick={() => {
-              onCancel()
-              reset()
-            }}
-          >
-            Cancel
-          </button>
-        )}
-
         <button
           type='submit'
           className='bg-blue-500 text-white disabled:bg-gray-400 rounded-md py-1 px-2 hover:bg-blue-400 ml-auto'

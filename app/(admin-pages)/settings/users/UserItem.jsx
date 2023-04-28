@@ -1,3 +1,4 @@
+import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
 import { useCallback, useState } from 'react'
@@ -27,6 +28,10 @@ const UserItem = ({ user, onDelete }) => {
       )}
       {isEditing && (
         <>
+          <CloseButton
+            className='absolute right-2 top-2'
+            onClick={closeEditUser}
+          />
           <DeleteButton
             entity='user'
             onConfirm={async () => {
@@ -40,12 +45,9 @@ const UserItem = ({ user, onDelete }) => {
               }
             }}
             isDeleting={isDeleting}
+            className='absolute bottom-3 left-3'
           />
-          <UpdateUserForm
-            user={user}
-            onSubmit={closeEditUser}
-            onCancel={closeEditUser}
-          />
+          <UpdateUserForm user={user} onSubmit={closeEditUser} />
         </>
       )}
     </li>

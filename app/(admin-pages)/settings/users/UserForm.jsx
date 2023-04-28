@@ -12,7 +12,6 @@ import { useForm } from 'react-hook-form'
  * @param {string} [props.buttonText]
  * @param {boolean} [props.requirePassword]
  * @param {boolean} [props.sendOnlyChangedData]
- * @param {boolean} [props.onCancel]
  * @param {{ question: string, id: number }} [props.questions]
  */
 const QuestionUser = ({
@@ -27,7 +26,6 @@ const QuestionUser = ({
     isAdmin: 'false',
   },
   buttonText = 'Create',
-  onCancel,
   requirePassword = true,
   sendOnlyChangedData = true,
 }) => {
@@ -102,19 +100,6 @@ const QuestionUser = ({
       </fieldset>
 
       <div className='flex justify-end'>
-        {onCancel && (
-          <Button
-            type='button'
-            variant='danger'
-            onClick={() => {
-              onCancel()
-              reset()
-            }}
-          >
-            Cancel
-          </Button>
-        )}
-
         <Button type='submit' className='ml-auto' disabled={isSubmitting}>
           {buttonText}
         </Button>

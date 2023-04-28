@@ -1,3 +1,4 @@
+import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
 import useQuestionDetail from '@/app/hooks/useQuestionDetail'
@@ -25,10 +26,15 @@ const QuestionItem = ({ question }) => {
       )}
       {isEditing && questionDetail && (
         <>
+          <CloseButton
+            className='absolute right-2 top-2'
+            onClick={closeEditForm}
+          />
           <DeleteButton
             entity='question'
             onConfirm={async () => await deleteQuestion()}
             isDeleting={isDeleting}
+            className='absolute bottom-3 left-3'
           />
           <UpdateQuestionForm
             question={{
@@ -40,7 +46,6 @@ const QuestionItem = ({ question }) => {
               })),
             }}
             onSubmit={closeEditForm}
-            onCancel={closeEditForm}
           />
         </>
       )}
