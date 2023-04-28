@@ -2,7 +2,9 @@
 
 import AddButton from '@/app/components/AddButton'
 import CloseButton from '@/app/components/CloseButton'
-import Input_label from '@/app/components/Input_label'
+import Input_label, { labelClasses } from '@/app/components/Input_label'
+import XSelect from '@/app/components/XSelect'
+import useTopics from '@/app/hooks/useTopics'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -12,30 +14,35 @@ import { useFieldArray, useForm } from 'react-hook-form'
 
 /**
  * @param {object} props
- * @param {boolean} props.resetOnSuccess
  * @param {(data: FormValues) => Promise<void>} props.onSubmit
  * @param {FormValues} [props.defaultValues]
  * @param {string} [props.buttonText]
  * @param {boolean} [props.trackAnswers]
- * @param {boolean} [props.onCancel]
  */
 const QuestionForm = ({
-  resetOnSuccess,
   onSubmit,
-  defaultValues = { question: '', answers: [] },
+  defaultValues,
   buttonText = 'Create',
   trackAnswers = false,
-  onCancel,
 }) => {
+  const { topics } = useTopics()
   const {
     handleSubmit,
     register,
     formState: { isSubmitting },
     control,
-    reset,
     getValues,
   } = useForm({
-    defaultValues,
+    defaultValues: defaultValues
+      ? {
+          ...defaultValues,
+          topicId: defaultValues.topicId ?? topics.data[0].id,
+        }
+      : {
+          question: '',
+          answers: [],
+          topicId: topics.data[0].id,
+        },
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -49,17 +56,25 @@ const QuestionForm = ({
     <form
       onSubmit={handleSubmit(async (data) => {
         await onSubmit({ ...data, deletedAnswersIds })
-        if (resetOnSuccess) {
-          reset()
-        }
       })}
       className='flex flex-col gap-3'
     >
       <Input_label label='Question' {...register('question')} required />
 
+      <XSelect
+        label='Question topic'
+        {...register('topicId', { valueAsNumber: true })}
+      >
+        {topics.data.map((t) => (
+          <option key={t.id} value={t.id}>
+            {t.topic}
+          </option>
+        ))}
+      </XSelect>
+
       <fieldset className='flex flex-col gap-2'>
         <div className='flex items-center justify-between'>
-          <legend>Possible answers</legend>
+          <legend className={labelClasses}>Possible answers</legend>
           <AddButton
             title='Add possible answer'
             type='button'

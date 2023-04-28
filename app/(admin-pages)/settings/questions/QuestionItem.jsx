@@ -44,6 +44,7 @@ const QuestionItem = ({ question }) => {
                 id: pa.id,
                 value: pa.answer,
               })),
+              topicId: question.topic?.id,
             }}
             onSubmit={closeEditForm}
           />
