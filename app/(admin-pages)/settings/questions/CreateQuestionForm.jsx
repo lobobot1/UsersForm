@@ -22,7 +22,7 @@ const CreateQuestionForm = () => {
       )}
       {topics && (
         <QuestionForm
-          onSubmit={async (data) => {
+          onSubmit={async ({ deletedAnswersIds, ...data }) => {
             try {
               setError(null)
               await createQuestion({
