@@ -4,6 +4,7 @@ import AddButton from '@/app/components/AddButton'
 import Button from '@/app/components/Button'
 import CloseButton from '@/app/components/CloseButton'
 import { inputClasses, labelClasses } from '@/app/components/Input_label'
+import TextArea from '@/app/components/TextArea'
 import { useFieldArray, useForm } from 'react-hook-form'
 
 /**
@@ -58,17 +59,7 @@ const QuestionForm = ({
       })}
       className='flex flex-col gap-3'
     >
-      <div className='flex flex-col'>
-        <label htmlFor='revisionText' className={labelClasses}>
-          Review text
-        </label>
-        <textarea
-          id='revisionText'
-          className={inputClasses}
-          required
-          {...register('revisionText')}
-        ></textarea>
-      </div>
+      <TextArea label='Review text' required {...register('revisionText')} />
 
       <fieldset>
         <div className='flex items-center justify-between'>
