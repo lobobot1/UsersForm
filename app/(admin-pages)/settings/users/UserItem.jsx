@@ -1,14 +1,21 @@
+import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
 import { useCallback, useState } from 'react'
 import UpdateUserForm from './UpdateUserForm'
 
-/** @param {{ user: import('./types').User }} props */
-const UserItem = ({ user }) => {
+/**
+ * @param {{
+ *  user: import('./types').User,
+ *  onDelete: (userId: number) => Promise<void>
+ * }} props
+ */
+const UserItem = ({ user, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const closeEditUser = useCallback(() => setIsEditing(false), [])
 
   return (
-    <li key={user.id} className='rounded-md p-2 bg-white text-black'>
+    <li key={user.id} className='rounded-md p-2 bg-white text-black relative'>
       {!isEditing && (
         <div className='flex items-center justify-between'>
           <span>
@@ -19,11 +26,27 @@ const UserItem = ({ user }) => {
         </div>
       )}
       {isEditing && (
-        <UpdateUserForm
-          user={user}
-          onSubmit={closeEditUser}
-          onCancel={closeEditUser}
-        />
+        <>
+          <DeleteButton
+            entity='user'
+            onConfirm={async () => {
+              setIsDeleting(true)
+              try {
+                await onDelete(user.id)
+              } catch (error) {
+                throw error
+              } finally {
+                setIsDeleting(false)
+              }
+            }}
+            isDeleting={isDeleting}
+          />
+          <UpdateUserForm
+            user={user}
+            onSubmit={closeEditUser}
+            onCancel={closeEditUser}
+          />
+        </>
       )}
     </li>
   )
