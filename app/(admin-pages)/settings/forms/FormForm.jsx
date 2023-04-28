@@ -3,8 +3,9 @@
 import AddButton from '@/app/components/AddButton'
 import Button from '@/app/components/Button'
 import CloseButton from '@/app/components/CloseButton'
-import { inputClasses, labelClasses } from '@/app/components/Input_label'
+import { labelClasses } from '@/app/components/Input_label'
 import TextArea from '@/app/components/TextArea'
+import XSelect from '@/app/components/XSelect'
 import { useFieldArray, useForm } from 'react-hook-form'
 
 /**
@@ -74,21 +75,21 @@ const QuestionForm = ({
         <div className='flex flex-col gap-2'>
           {fields.map((field, index) => (
             <div key={field.id} className='relative'>
-              <label hidden>Question {index + 1}</label>
-              <select
-                id={`questions.${index}.id`}
+              <XSelect
+                hideLabel
+                label={`Question ${index + 1}`}
+                name={`questions.${index}.id`}
+                required
                 {...register(`questions.${index}.id`, {
                   valueAsNumber: true,
                 })}
-                className={inputClasses}
-                required
               >
                 {questions.map((q) => (
                   <option key={q.id} value={q.id}>
                     {q.question}
                   </option>
                 ))}
-              </select>
+              </XSelect>
 
               {index > 0 && (
                 <CloseButton
