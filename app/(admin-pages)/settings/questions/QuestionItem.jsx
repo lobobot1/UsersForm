@@ -20,7 +20,7 @@ const QuestionItem = ({ question }) => {
       {isLoading && <p>Loading...</p>}
       {!isEditing && (
         <div className='flex items-center justify-between'>
-          <span>{question.question}</span>
+          <span className='line-clamp-1'>{question.question}</span>
           <EditButton onClick={() => setIsEditing(true)} title='Edit' />
         </div>
       )}

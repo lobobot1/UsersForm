@@ -23,7 +23,9 @@ const FormItem = ({ form, onDelete, onClone }) => {
     <li key={form.id} className='rounded-md p-2 bg-white text-black relative'>
       {!isEditing && (
         <div className='flex items-center justify-between'>
-          <span>{form.revisionText}</span>
+          <span className='line-clamp-1'>
+            {form.id.slice(0, 8)} - {form.revisionText}
+          </span>
           <div className='flex gap-2'>
             <button
               className='flex items-center justify-center disabled:text-gray-500'
@@ -32,7 +34,7 @@ const FormItem = ({ form, onDelete, onClone }) => {
                 setIsCloning(true)
                 try {
                   await onClone({
-                    revisionText: form.revisionText + ' COPY',
+                    revisionText: 'COPY ' + form.revisionText,
                     questions: form.question.map((q) => ({ id: q.id })),
                   })
                 } catch (error) {

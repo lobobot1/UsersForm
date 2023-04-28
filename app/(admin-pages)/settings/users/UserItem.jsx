@@ -19,7 +19,7 @@ const UserItem = ({ user, onDelete }) => {
     <li key={user.id} className='rounded-md p-2 bg-white text-black relative'>
       {!isEditing && (
         <div className='flex items-center justify-between'>
-          <span>
+          <span className='line-clamp-1'>
             {user.nickname} | {user.name} {user.lastname} |{' '}
             {user.isAdmin ? 'Admin' : 'User'}
           </span>

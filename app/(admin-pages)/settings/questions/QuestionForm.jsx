@@ -39,7 +39,7 @@ const QuestionForm = ({
           topicId: defaultValues.topicId ?? topics.data[0].id,
         }
       : {
-          question: 'mmm',
+          question: '',
           answers: [],
           topicId: topics.data[0].id,
         },
