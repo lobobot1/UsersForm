@@ -23,6 +23,7 @@ const select = {
         select: {
           id: true,
           question: true,
+          topic: { select: { id: true, topic: true } },
         },
       },
       createdAt: true,
