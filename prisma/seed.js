@@ -39,7 +39,7 @@ const questions = [
   },
   {
     id: 8,
-    topicId: 1,
+    topicId: 2,
     question: 'General opinion on item',
   },
   {
