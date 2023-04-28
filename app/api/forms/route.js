@@ -1,4 +1,4 @@
-import isAdminRequest from '@lib/auth/isAdminRequest'
+import isAdminRequest, { getCookieId } from '@lib/auth/isAdminRequest'
 import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import { fatality, unauthorized } from '@lib/http/ErrorHandler'
 import { successListResponse } from '@lib/http/ResponseHandler'
@@ -11,7 +11,12 @@ import { NextRequest } from 'next/server'
 export async function GET(request) {
   if (!isLoggedRequest()) return unauthorized({ entity: 'read forms' })
   const isAdmin = await isAdminRequest(request)
-
+  const userId = getCookieId(request)
+  const where = {
+    user: {
+      id: userId,
+    },
+  }
   const data = await prisma.form.findMany({
     select: {
       id: true,
@@ -40,6 +45,7 @@ export async function GET(request) {
       },
       revisionText: true,
       FormAnswered: {
+        where: !isAdmin ? where : undefined,
         select: {
           id: true,
           answer: true,
