@@ -27,7 +27,8 @@
     "react-dom": "18.2.0",
     "react-hook-form": "7.43.9",
     "swr": "2.1.5",
-    "tailwindcss": "3.3.1"
+    "tailwindcss": "3.3.1",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "devDependencies": {
     "prisma": "4.13.0"
