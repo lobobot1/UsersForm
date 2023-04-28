@@ -65,6 +65,7 @@ const QuestionForm = ({
         <textarea
           id='revisionText'
           className={inputClasses}
+          required
           {...register('revisionText')}
         ></textarea>
       </div>
