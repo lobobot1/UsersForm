@@ -1,5 +1,6 @@
 'use client'
 import ErrorAlert from '@/app/components/ErrorAlert'
+import Spinner from '@/app/components/Spinner'
 import useQuestions from '@/app/hooks/useQuestions'
 import useTopics from '@/app/hooks/useTopics'
 import { useState } from 'react'
@@ -9,11 +10,16 @@ const CreateQuestionForm = () => {
   const [error, setError] = useState(null)
   const { createQuestion } = useQuestions()
 
-  const { topics } = useTopics()
+  const { topics, isLoading } = useTopics()
 
   return (
     <>
       {error && <ErrorAlert>{error}</ErrorAlert>}
+      {isLoading && (
+        <div className='flex items-center justify-center'>
+          <Spinner />
+        </div>
+      )}
       {topics && (
         <QuestionForm
           onSubmit={async (data) => {
