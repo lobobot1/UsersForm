@@ -1,31 +1,37 @@
 'use client'
 import { useForm } from 'react-hook-form'
 import Select from './select'
-import useFormDetail from '../hooks/useFormDetail'
 
-const Form = ({id}) => {
-  const { register, handleSubmit, formState:{errors} } = useForm()
-  const {form} = useFormDetail(id)
+const Form = ({ form }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
 
   const onSubmit = (data) => {
     console.log(data)
   }
+
   
   return (
-    <div className=' overflow-y-auto' id='scroll' >
-      {form && (
+    <div className=' overflow-y-auto' id='scroll'>
+      {form?.length > 0 && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          {form.data.question.map((item) => (
+          {form.map((item, index) => (
             <div key={item.id} className='flex flex-col gap-2'>
-              <label className=' text-xl font-semibold'>{item.question[0].toUpperCase()+item.question.slice(1)}</label>
+              <label className=' text-xl font-semibold'>
+                {item.question[0].toUpperCase() + item.question.slice(1)}
+              </label>
               {item.PossibleAnswer.length > 0 ? (
                 <div className='flex flex-col'>
                   <Select
                     register={register}
-                    value={item.question}
+                    value={`question.${index}.value`}
                     option={item.PossibleAnswer}
                   />
-                  { errors[item.question] && (
+                  <input hidden {...register(`question.${index}.questionId`, {valueAsNumber:true})} value={item.id} />
+                  {errors[item.question] && (
                     <span className='text-red-500'>This field is required</span>
                   )}
                 </div>
@@ -59,4 +65,3 @@ const Form = ({id}) => {
 }
 
 export default Form
-
