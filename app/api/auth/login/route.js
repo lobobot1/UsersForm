@@ -49,6 +49,7 @@ export async function POST(request) {
     select: {
       id: true,
       password: true,
+      isAdmin: true,
     },
   })
 
@@ -60,6 +61,7 @@ export async function POST(request) {
     NextResponse.json({
       status: 200,
       message: 'successful login',
+      isAdmin: user.isAdmin,
     }),
     { id: user.id }
   )
