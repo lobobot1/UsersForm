@@ -1,9 +1,11 @@
+'use client'
 import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
 import Spinner from '@/app/components/Spinner'
 import Clone from '@/app/components/icons/Clone'
 import { useCallback, useState } from 'react'
+import FormResponsesModal from './FormResponsesModal'
 import UpdateFormForm from './UpdateFormForm'
 
 /**
@@ -26,7 +28,10 @@ const FormItem = ({ form, onDelete, onClone }) => {
           <span className='line-clamp-1'>
             {form.id.slice(0, 8)} - {form.revisionText}
           </span>
-          <div className='flex gap-2'>
+          <div className='flex gap-3'>
+            <FormResponsesModal formId={form.id} />
+
+            {/* Clone button */}
             <button
               className='flex items-center justify-center disabled:text-gray-500'
               title='Clone form'

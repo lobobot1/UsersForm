@@ -1,9 +1,8 @@
 import { fetch } from '@lib/fetch'
-import { useCallback } from 'react'
 import useSWR from 'swr'
 
-export default function useFormDetail(id) {
-  const swr = useSWR(`/api/forms/${id}`, fetch)
-  
+export default function useFormDetail(id, enabled = true) {
+  const swr = useSWR(enabled ? `/api/forms/${id}` : null, fetch)
+
   return { ...swr, form: swr.data }
 }
