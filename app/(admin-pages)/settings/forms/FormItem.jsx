@@ -1,8 +1,8 @@
 import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
-import Clone from '@/app/components/icons/Clone'
 import Spinner from '@/app/components/Spinner'
+import Clone from '@/app/components/icons/Clone'
 import { useCallback, useState } from 'react'
 import UpdateFormForm from './UpdateFormForm'
 
@@ -29,6 +29,7 @@ const FormItem = ({ form, onDelete, onClone }) => {
           <div className='flex gap-2'>
             <button
               className='flex items-center justify-center disabled:text-gray-500'
+              title='Clone form'
               disabled={isCloning}
               onClick={async () => {
                 setIsCloning(true)
