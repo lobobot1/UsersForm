@@ -10,9 +10,9 @@ const Form = ({ form }) => {
   } = useForm()
 
   const onSubmit = (data) => {
-    console.log(data)
+    console.log(JSON.stringify(data))
   }
-
+// api/forms/id del formulario/reply
   
   return (
     <div className=' overflow-y-auto' id='scroll'>
@@ -27,10 +27,10 @@ const Form = ({ form }) => {
                 <div className='flex flex-col'>
                   <Select
                     register={register}
-                    value={`question.${index}.value`}
+                    value={`answers.${index}.answer`}
                     option={item.PossibleAnswer}
                   />
-                  <input hidden {...register(`question.${index}.questionId`, {valueAsNumber:true})} value={item.id} />
+                  <input hidden {...register(`answers.${index}.questionId`, {valueAsNumber:true})} value={item.id} />
                   {errors[item.question] && (
                     <span className='text-red-500'>This field is required</span>
                   )}
