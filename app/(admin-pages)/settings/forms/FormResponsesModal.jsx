@@ -32,7 +32,11 @@ const FormResponsesModal = ({ formId }) => {
 
             <div className='flex justify-between items-center mt-3 mb-2'>
               <h3 className='font-bold'>Responses</h3>
-              <button className='flex gap-2' title='Download as spreadsheet'>
+              <button
+                className='flex gap-2 disabled text-gray-500'
+                title='Download as spreadsheet'
+                disabled={form.data.FormAnswered.length === 0}
+              >
                 <Download />
               </button>
             </div>
@@ -55,6 +59,9 @@ const FormResponsesModal = ({ formId }) => {
                   </ul>
                 </li>
               ))}
+              {form.data.FormAnswered.length === 0 && (
+                <li className='italic'>No responses available...</li>
+              )}
             </ul>
           </>
         )}
