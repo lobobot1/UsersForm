@@ -30,6 +30,13 @@ const FormResponsesModal = ({ formId }) => {
             <h3 className='font-bold'>Revision text</h3>
             <p>{form.data.revisionText}</p>
 
+            <h3 className='font-bold mt-3'>Questions</h3>
+            <ul className='list-decimal list-inside'>
+              {form.data.question.map((q) => (
+                <li key={q.id}>{q.question}</li>
+              ))}
+            </ul>
+
             <div className='flex justify-between items-center mt-3 mb-2'>
               <h3 className='font-bold'>Responses</h3>
               <button

@@ -66,8 +66,13 @@ const FormItem = ({ form, onDelete, onClone }) => {
             entity='form'
             onConfirm={async () => {
               setIsDeleting(true)
-              await onDelete(form.id)
-              setIsDeleting(false)
+              try {
+                await onDelete(form.id)
+              } catch (error) {
+                throw error
+              } finally {
+                setIsDeleting(false)
+              }
             }}
             isDeleting={isDeleting}
             className='absolute bottom-3 left-3'
