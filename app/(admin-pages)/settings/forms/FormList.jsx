@@ -23,6 +23,7 @@ const FormList = () => {
           onClone={createForm}
         />
       ))}
+      {forms?.data.length === 0 && <li>There aren&apos;t any forms yet...</li>}
     </ul>
   )
 }

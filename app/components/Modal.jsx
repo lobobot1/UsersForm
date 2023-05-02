@@ -2,7 +2,7 @@
 import { clsx } from '@/util/clsx'
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import CloseButton from './CloseButton'
+import XMark from './icons/XMark'
 
 const maxSizes = {
   sm: 'max-w-sm',
@@ -23,7 +23,7 @@ const Modal = ({ isOpen, setIsOpen, title, children, maxSize = 'md' }) => {
   if (!isOpen || !isMounted) return null
 
   return createPortal(
-    <div className='absolute inset-0 grid items-center justify-center'>
+    <div className='absolute inset-0 grid items-center justify-center z-10'>
       <button
         className='absolute inset-0 z-0 bg-black/20 cursor-default backdrop-blur-sm'
         onClick={() => setIsOpen(false)}
@@ -39,11 +39,13 @@ const Modal = ({ isOpen, setIsOpen, title, children, maxSize = 'md' }) => {
       >
         <div className='flex justify-between mb-2'>
           <span className='text-lg font-bold'>{title}</span>
-          <CloseButton
+          <button
             className='shrink-0 self-start'
             title='Close modal'
             onClick={() => setIsOpen(false)}
-          />
+          >
+            <XMark />
+          </button>
         </div>
         <div className='max-h-full overflow-auto'>{children}</div>
       </div>

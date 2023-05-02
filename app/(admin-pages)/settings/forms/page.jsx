@@ -14,9 +14,9 @@ const Page = async () => {
       </div>
 
       <div className='w-full lg:max-w-sm shrink-0'>
-        <h2 className='text-xl font-bold mb-3 mt-3 lg:mt-0'>
-          Create a new form
-        </h2>
+        <div className='mt-3 lg:mt-0 mb-3'>
+          <h2 className='text-xl font-bold lg:mt-0'>Create a new form</h2>
+        </div>
         <div className='bg-white p-2 text-black rounded-md'>
           <CreateFormForm />
         </div>

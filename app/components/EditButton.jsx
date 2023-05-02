@@ -10,7 +10,7 @@ const base = 'text-gray-900'
 /** @param {EditButtonProps} props */
 const EditButton = ({ children, className, ...props }) => {
   return (
-    <button className={clsx([base, className])} {...props}>
+    <button className={clsx([base, className])} type='button' {...props}>
       <PencilSquare />
     </button>
   )
