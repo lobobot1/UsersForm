@@ -27,6 +27,7 @@ const FormResponsesModal = ({ formId }) => {
         {isLoading && <Spinner />}
         {form && (
           <>
+            <h3 className='mb-3'>ID: {form.data.id}</h3>
             <h3 className='font-bold'>Revision text</h3>
             <p>{form.data.revisionText}</p>
 
