@@ -44,7 +44,7 @@ dependencies:
     specifier: 7.43.9
     version: 7.43.9(react@18.2.0)
   swr:
-    specifier: ^2.1.5
+    specifier: 2.1.5
     version: 2.1.5(react@18.2.0)
   tailwindcss:
     specifier: 3.3.1

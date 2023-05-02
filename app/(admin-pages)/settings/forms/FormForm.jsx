@@ -33,6 +33,7 @@ const QuestionForm = ({
     formState: { isSubmitting },
     control,
     reset,
+    watch,
   } = useForm({
     defaultValues: defaultValues ?? {
       revisionText: '',
@@ -47,6 +48,9 @@ const QuestionForm = ({
       minLength: 1,
     },
   })
+
+  const _selectedQuestions = watch('questions')
+  const selectedQuestions = new Set(_selectedQuestions.map((sq) => sq.id))
 
   return (
     <form
@@ -66,13 +70,22 @@ const QuestionForm = ({
           <AddButton
             title='Add question'
             type='button'
-            onClick={() => append({ id: questions[0].id })}
+            onClick={() =>
+              append(
+                {
+                  id: questions.find((q) => !selectedQuestions.has(q.id)).id,
+                },
+                { shouldFocus: false }
+              )
+            }
+            disabled={_selectedQuestions.length === questions.length}
+            className='disabled:opacity-0'
           />
         </div>
 
         <div className='flex flex-col gap-2'>
           {fields.map((field, index) => (
-            <div key={field.id} className='relative'>
+            <div key={field.id} className='flex gap-1'>
               <XSelect
                 hideLabel
                 label={`Question ${index + 1}`}
@@ -83,19 +96,24 @@ const QuestionForm = ({
                 })}
               >
                 {questions.map((q) => (
-                  <option key={q.id} value={q.id}>
+                  <option
+                    key={q.id}
+                    value={q.id}
+                    disabled={selectedQuestions.has(q.id)}
+                  >
                     {q.question}
                   </option>
                 ))}
               </XSelect>
 
-              {index > 0 && (
+              {index > 0 ? (
                 <CloseButton
                   onClick={() => remove(index)}
-                  className='absolute right-5 top-1/2 -translate-y-1/2'
                   title={`Remove question ${index + 1}`}
                   type='button'
                 />
+              ) : (
+                <div className='w-6 shrink-0'></div>
               )}
             </div>
           ))}

@@ -10,7 +10,7 @@ const XSelect = forwardRef(
     ref
   ) => {
     return (
-      <div className='flex flex-col'>
+      <div className='flex flex-col w-full'>
         <label htmlFor={id || name} className={labelClasses} hidden={hideLabel}>
           {label}
           {required && <span className='text-red-500 ml-1'>*</span>}
