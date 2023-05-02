@@ -2,8 +2,8 @@
 import CloseButton from '@/app/components/CloseButton'
 import DeleteButton from '@/app/components/DeleteButton'
 import EditButton from '@/app/components/EditButton'
-import Spinner from '@/app/components/Spinner'
 import Clone from '@/app/components/icons/Clone'
+import Spinner from '@/app/components/Spinner'
 import { useCallback, useState } from 'react'
 import FormResponsesModal from './FormResponsesModal'
 import UpdateFormForm from './UpdateFormForm'
@@ -59,7 +59,7 @@ const FormItem = ({ form, onDelete, onClone }) => {
       {isEditing && (
         <>
           <CloseButton
-            className='absolute right-2 top-2'
+            className='absolute right-2 top-2 z-10'
             onClick={closeEditForm}
           />
           <DeleteButton
@@ -75,7 +75,7 @@ const FormItem = ({ form, onDelete, onClone }) => {
               }
             }}
             isDeleting={isDeleting}
-            className='absolute bottom-3 left-3'
+            className='absolute bottom-3 left-3 z-10'
           />
           <UpdateFormForm
             form={{

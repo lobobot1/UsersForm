@@ -30,6 +30,7 @@ const DeleteButton = ({
       }
     }}
     disabled={isDeleting}
+    type='button'
   >
     {isDeleting ? <Spinner /> : <Trash />}
   </button>

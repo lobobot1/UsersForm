@@ -21,6 +21,7 @@ const CreateFormForm = () => {
       )}
       {questions && (
         <FormForm
+          showCopyModal
           resetOnSuccess
           onSubmit={async (data) => {
             try {
