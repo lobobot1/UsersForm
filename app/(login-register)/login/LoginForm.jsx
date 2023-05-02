@@ -27,7 +27,8 @@ const LoginForm = () => {
         })
 
         if (res.ok) {
-          router.push('/user')
+          const json = await res.json()
+          router.push(json.isAdmin ? '/settings' : '/user')
         } else {
           if (res.status === 403) {
             setError('Invalid credentials')

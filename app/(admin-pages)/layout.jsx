@@ -6,8 +6,9 @@ import Navbar from './Navbar'
 
 export default async function RootLayout({ children }) {
   const cookieList = cookies()
-  const isAdmin = await isAdminRequestFront(cookieList.get(cookieOption.name).value)
-  console.log(isAdmin)
+  const isAdmin = await isAdminRequestFront(
+    cookieList.get(cookieOption.name)?.value
+  )
 
   if (!isAdmin) {
     redirect('/user')

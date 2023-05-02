@@ -1,5 +1,6 @@
 import groupBy from '@/util/groupBy'
 import isUUID from '@/util/isUUId'
+import isAdminRequest, { getCookieId } from '@lib/auth/isAdminRequest'
 import { isLoggedRequest } from '@lib/auth/isLoggedRequest'
 import {
   invalidUrlParam,
@@ -23,6 +24,13 @@ export async function GET(request, { params }) {
   const { id } = params
   if (!isUUID(id)) return invalidUrlParam()
 
+  const isAdmin = await isAdminRequest(request)
+  const userId = getCookieId(request)
+  const where = {
+    user: {
+      id: userId,
+    },
+  }
   try {
     const data = await prisma.form.findFirst({
       where: { id: id },
@@ -40,6 +48,7 @@ export async function GET(request, { params }) {
           select: {
             id: true,
             question: true,
+            topic: { select: { id: true, topic: true } },
             PossibleAnswer: {
               select: {
                 id: true,
@@ -50,6 +59,7 @@ export async function GET(request, { params }) {
         },
         revisionText: true,
         FormAnswered: {
+          where: !isAdmin ? where : undefined,
           select: {
             id: true,
             status: {

@@ -20,6 +20,7 @@ export async function GET(request, { params }) {
       select: {
         id: true,
         question: true,
+        topic: { select: { id: true, topic: true, _count: true } },
         Forms: { select: { id: true, _count: true, author: true } },
         PossibleAnswer: { select: { answer: true, id: true } },
         createdAt: true,

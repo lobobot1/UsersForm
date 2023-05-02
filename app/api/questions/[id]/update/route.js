@@ -57,13 +57,15 @@ export async function PUT(request, { params }) {
     }
 
     const body = await request.json()
-    const { question } = body
+    const { question, topicId } = body
 
-    if (!question || question == '') return someFieldMissing()
+    if (!question || question == '' || !topicId || topicId == '')
+      return someFieldMissing()
 
     const data = await prisma.question.update({
       data: {
         question,
+        topicId,
       },
       where: {
         id: Number(id),

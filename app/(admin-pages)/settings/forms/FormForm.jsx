@@ -1,8 +1,11 @@
 'use client'
 
+import AddButton from '@/app/components/AddButton'
 import Button from '@/app/components/Button'
-import AddButton from '@/app/components/CloseButton'
-import { inputClasses, labelClasses } from '@/app/components/Input_label'
+import CloseButton from '@/app/components/CloseButton'
+import { labelClasses } from '@/app/components/Input_label'
+import TextArea from '@/app/components/TextArea'
+import XSelect from '@/app/components/XSelect'
 import { useFieldArray, useForm } from 'react-hook-form'
 
 /**
@@ -15,7 +18,6 @@ import { useFieldArray, useForm } from 'react-hook-form'
  * @param {(data: FormValues) => Promise<void>} props.onSubmit
  * @param {FormValues} [props.defaultValues]
  * @param {string} [props.buttonText]
- * @param {boolean} [props.onCancel]
  * @param {{ question: string, id: number }} [props.questions]
  */
 const QuestionForm = ({
@@ -23,7 +25,6 @@ const QuestionForm = ({
   onSubmit,
   defaultValues,
   buttonText = 'Create',
-  onCancel,
   questions,
 }) => {
   const {
@@ -57,16 +58,7 @@ const QuestionForm = ({
       })}
       className='flex flex-col gap-3'
     >
-      <div className='flex flex-col'>
-        <label htmlFor='revisionText' className={labelClasses}>
-          Review text
-        </label>
-        <textarea
-          id='revisionText'
-          className={inputClasses}
-          {...register('revisionText')}
-        ></textarea>
-      </div>
+      <TextArea label='Review text' required {...register('revisionText')} />
 
       <fieldset>
         <div className='flex items-center justify-between'>
@@ -81,24 +73,24 @@ const QuestionForm = ({
         <div className='flex flex-col gap-2'>
           {fields.map((field, index) => (
             <div key={field.id} className='relative'>
-              <label hidden>Question {index + 1}</label>
-              <select
-                id={`questions.${index}.id`}
+              <XSelect
+                hideLabel
+                label={`Question ${index + 1}`}
+                name={`questions.${index}.id`}
+                required
                 {...register(`questions.${index}.id`, {
                   valueAsNumber: true,
                 })}
-                className={inputClasses}
-                required
               >
                 {questions.map((q) => (
                   <option key={q.id} value={q.id}>
                     {q.question}
                   </option>
                 ))}
-              </select>
+              </XSelect>
 
               {index > 0 && (
-                <AddButton
+                <CloseButton
                   onClick={() => remove(index)}
                   className='absolute right-5 top-1/2 -translate-y-1/2'
                   title={`Remove question ${index + 1}`}
@@ -111,20 +103,6 @@ const QuestionForm = ({
       </fieldset>
 
       <div className='flex justify-end'>
-        {onCancel && (
-          <Button
-            type='button'
-            variant='danger'
-            className='mr-auto'
-            onClick={() => {
-              onCancel()
-              reset()
-            }}
-          >
-            Cancel
-          </Button>
-        )}
-
         <Button type='submit' disabled={isSubmitting}>
           {buttonText}
         </Button>
