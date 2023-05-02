@@ -48,18 +48,19 @@ export async function GET(request, { params }) {
 
   for (let data of dataByForm) {
     const { FormAnswered, question, id, revisionText } = data
-
     const topics = new Map(
-      question.map((qst) => [qst.topic.id, qst.topic])
-    ).values()
+      question
+        .filter((qst) => qst.topic)
+        .map((qst) => [qst.topic?.id, qst.topic])
+    )
 
     const topicsWithquestions = []
 
-    for (let topic of topics) {
+    for (let topic of topics.values()) {
       topicsWithquestions.push({
         topic: topic.topic,
         questionCount: question
-          .filter((qst) => qst.topic.id === topic.id)
+          .filter((qst) => qst?.topic?.id === topic.id)
           .map((qst) => ({ question: qst.question, id: qst.id })),
       })
     }
@@ -178,11 +179,22 @@ export async function GET(request, { params }) {
 
     XLSX.utils.book_append_sheet(book, sheet, id.slice(24))
     XLSX.set_fs(fs)
-    XLSX.writeFileXLSX(book, `./xlsx/${id.slice(24)}.xlsx`, {
+    const xlsxlData = XLSX.write(book, {
       compression: true,
+      type: 'buffer',
+    })
+
+    return new Response(xlsxlData, {
+      headers: {
+        'Content-Type':
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Disposition': 'attachment;filename="example.xlsx"',
+      },
+      status: 200,
     })
   }
-  return successListResponse({ data: dataByForm })
+
+  // return successListResponse({ data: dataByForm })
 }
 
 function formatExcel() {
