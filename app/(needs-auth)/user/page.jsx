@@ -23,7 +23,7 @@ const User = () => {
         <Link
         href={`/form/${item.id}`}
         key={index}
-        className={`flex justify-center items-center rounded-md py-5 px-8 mb-2  cursor-pointer transition-color duration-[0.5s] bg-neutral-100 hover:bg-neutral-200 hover:scale-105 delay-[50ms] text-neutral-800 font-semibold shadow-xl`}
+        className={`flex justify-center items-center rounded-md py-5 px-8 mb-2  cursor-pointer transition-color duration-[0.5s] ${item?.FormAnswered.length < 1 ? 'bg-neutral-100' : 'bg-green-400'} hover:bg-neutral-200 hover:scale-105 delay-[50ms] text-neutral-800 font-semibold shadow-xl`}
         >
           {item.revisionText}
         </Link>

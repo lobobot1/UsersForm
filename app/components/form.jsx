@@ -2,15 +2,19 @@
 import { useForm } from 'react-hook-form'
 import Select from './select'
 
-const Form = ({ form }) => {
+const Form = ({ form , sendReply}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => {
-    console.log(JSON.stringify(data))
+  const onSubmit = async (data) => {
+    try{
+      await sendReply(JSON.stringify(data))
+    }catch(e){
+      alert(e)
+    }
   }
 // api/forms/id del formulario/reply
   
