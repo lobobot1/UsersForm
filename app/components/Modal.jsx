@@ -18,18 +18,29 @@ const maxSizes = {
   full: '',
 }
 
+/**
+ * @param {{
+ *  isOpen: boolean,
+ *  setIsOpen: (open: false) => void,
+ *  title: import('react').ReactNode,
+ *  children: import('react').ReactNode,
+ *  maxSize: keyof typeof maxSizes,
+ *  triggerRef: HTMLElement
+ * }} props
+ */
 const Modal = ({
   isOpen,
   setIsOpen,
   title,
   children,
   maxSize = 'md',
-  trigger,
+  triggerRef,
 }) => {
   const [isMounted, setIsMounted] = useState(false)
   const id = useId()
   const contentRef = useRef(null)
   const currentFocusedElement = useRef(null)
+  const hasBeenOpened = useRef(false)
 
   useEffect(() => setIsMounted(true), [])
 
@@ -39,8 +50,15 @@ const Modal = ({
       const focusables = getFocusableElements(contentRef.current)
       focusables[0].focus()
       currentFocusedElement.current = 0
+      hasBeenOpened.current = true
     }
   }, [isOpen])
+
+  useEffect(() => {
+    if (hasBeenOpened.current && !isOpen) {
+      triggerRef.focus()
+    }
+  }, [isOpen, triggerRef])
 
   if (!isOpen || !isMounted) return null
 
@@ -65,7 +83,6 @@ const Modal = ({
         ])}
         ref={contentRef}
         onKeyDown={(e) => {
-          console.log({ current: currentFocusedElement.current })
           switch (e.key) {
             case 'Escape':
               setIsOpen(false)

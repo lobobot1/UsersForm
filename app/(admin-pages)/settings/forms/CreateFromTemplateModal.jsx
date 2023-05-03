@@ -9,7 +9,7 @@ import Modal from '@/app/components/Modal'
 import Spinner from '@/app/components/Spinner'
 import { useFormTemplates } from '@/app/hooks/useFormTemplates'
 import useQuestions from '@/app/hooks/useQuestions'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import FormForm from './FormForm'
 
 const CopyTemplateModal = ({ onCopy }) => {
@@ -18,6 +18,7 @@ const CopyTemplateModal = ({ onCopy }) => {
   const { questions, isLoading } = useQuestions()
   const { templates, createTemplate, deleteTemplate, updateTemplate } =
     useFormTemplates()
+  const triggerRef = useRef(null)
 
   return (
     <>
@@ -26,6 +27,7 @@ const CopyTemplateModal = ({ onCopy }) => {
         title='Create from template'
         className='absolute top-0 right-0 z-10'
         type='button'
+        ref={triggerRef}
       >
         <Clone />
       </button>
@@ -35,10 +37,11 @@ const CopyTemplateModal = ({ onCopy }) => {
         setIsOpen={setIsOpen}
         title={<h2>Create form from template</h2>}
         maxSize='2xl'
+        triggerRef={triggerRef.current}
       >
         <button
           onClick={() => setShowForm(!showForm)}
-          className='flex gap-2 items-center mb-2 w-full pb-2 border-b'
+          className='flex items-center w-full gap-2 pb-2 mb-2 border-b'
           type='button'
         >
           {showForm ? (
@@ -66,7 +69,7 @@ const CopyTemplateModal = ({ onCopy }) => {
         )}
         {showForm && isLoading && <Spinner />}
 
-        <ul className='space-y-2 mt-2'>
+        <ul className='mt-2 space-y-2'>
           {questions &&
             templates?.map((t) => (
               <TemplateItem
@@ -95,7 +98,7 @@ function TemplateItem({ template, questions, onDelete, onUpdate, onCopy }) {
     [questions]
   )
   return (
-    <li className='p-2 border rounded-md relative'>
+    <li className='relative p-2 border rounded-md'>
       {isEditing ? (
         <>
           <CloseButton
@@ -145,7 +148,7 @@ function TemplateItem({ template, questions, onDelete, onUpdate, onCopy }) {
           </div>
           <p className='line-clamp-1'>{template.revisionText}</p>
 
-          <h3 className='font-bold mt-2'>Questions</h3>
+          <h3 className='mt-2 font-bold'>Questions</h3>
           <ul>
             {template.questions.map((q) => (
               <li key={q.id}>

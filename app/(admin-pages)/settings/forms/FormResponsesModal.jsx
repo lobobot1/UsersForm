@@ -6,7 +6,7 @@ import Spinner from '@/app/components/Spinner'
 import useFormDetail from '@/app/hooks/useFormDetail'
 import useFormStatus from '@/app/hooks/useFormStatus'
 import formatList from '@/util/formatList'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import FormResponseItem from './FormResponseItem'
 
 /**
@@ -15,6 +15,7 @@ import FormResponseItem from './FormResponseItem'
 const FormResponsesModal = ({ formId, uncheckedResponses }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isCheckingAll, setIsCheckingAll] = useState(false)
+  const triggerRef = useRef(null)
 
   const {
     form,
@@ -55,7 +56,11 @@ const FormResponsesModal = ({ formId, uncheckedResponses }) => {
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} title='View responses'>
+      <button
+        onClick={() => setIsOpen(true)}
+        title='View responses'
+        ref={triggerRef}
+      >
         <Eye />
       </button>
 
@@ -64,6 +69,7 @@ const FormResponsesModal = ({ formId, uncheckedResponses }) => {
         setIsOpen={setIsOpen}
         title={<h2>{formId.slice(0, 8)} - Details</h2>}
         maxSize='5xl'
+        triggerRef={triggerRef.current}
       >
         {isLoading && <Spinner />}
         {form && formStatus && (
