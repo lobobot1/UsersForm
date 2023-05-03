@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client')
-const fs = require('fs').promises
+const fs = require('fs')
 
 const CryptoJS = require('crypto-js')
 const prisma = new PrismaClient({})
@@ -100,6 +100,18 @@ const questions = [
     question: 'Sentiment of feedback',
   },
 ]
+
+const envPaths = {
+  production: '.env',
+  development: '.env.local',
+  default: '.env.example',
+}
+
+const envFile = envPaths[process.env.NODE_ENV]
+if (!fs.existsSync(envFile)) {
+  return console.error('Not found env path')
+}
+
 /** Execute Seeder */
 Main()
   .then(async () => await prisma.$disconnect())
@@ -131,7 +143,8 @@ async function Main() {
 async function firstAdmin() {
   /** Seed first Admin user */
   console.log('👨‍💻 Generating Administrator User')
-  const file = await fs.readFile('.env.local', 'utf-8')
+
+  const file = await fs.promises.readFile(envFile, 'utf-8')
   const secret = file.match(/SECRET="(.*)"/)[1]
 
   const data = {
@@ -167,7 +180,7 @@ async function formStatus() {
   )
 }
 async function questionsTopics() {
-  console.log('Generating questions topics... ')
+  console.log('📚 Generating questions topics... ')
   /** Seed question Topics */
   const topics = [
     {
@@ -198,9 +211,8 @@ async function questionsTopics() {
     )
   )
 }
-
 async function firstQuestions() {
-  console.log('Generating questions... ')
+  console.log('🔍 Generating questions... ')
   /** Seed first questions */
 
   return Boolean(
@@ -209,10 +221,9 @@ async function firstQuestions() {
     )
   )
 }
-
 async function firstPossibleAnswers() {
   /** Seed First Possible Answers */
-  console.log('Generating possible answers... ')
+  console.log('🖊️ Generating possible answers... ')
   try {
     const answers = [
       {
@@ -332,6 +343,11 @@ function encryptToSaveDB(msg, secret) {
   return CryptoJS.HmacSHA256(CryptoJS.SHA256(msg).toString(), k).toString()
 }
 
+/**
+ *  Allow create answers quickly
+ * @param { {id:number, answer:string }} answer
+ * @returns { Prisma.Prisma__PossibleAnswerClient<PossibleAnswer, never> }
+ */
 async function createAnswer({ id, answer }) {
   return await prisma.possibleAnswer.create({
     data: { answer, question: { connect: { id } } },
