@@ -1,8 +1,12 @@
 'use client'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import Select from './select'
 
 const Form = ({ form , sendReply}) => {
+
+  const router = useRouter()
+
   const {
     register,
     handleSubmit,
@@ -11,18 +15,18 @@ const Form = ({ form , sendReply}) => {
 
   const onSubmit = async (data) => {
     try{
-      await sendReply(JSON.stringify(data))
+      await sendReply(data)
+      router.push('/user')
     }catch(e){
       alert(e)
     }
   }
-// api/forms/id del formulario/reply
-  
+  console.log(form);
   return (
     <div className=' overflow-y-auto' id='scroll'>
-      {form?.length > 0 && (
+      {form.question.length > 0 && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          {form.map((item, index) => (
+          {form.question.map((item, index) => (
             <div key={item.id} className='flex flex-col gap-2'>
               <label className=' text-xl font-semibold'>
                 {item.question[0].toUpperCase() + item.question.slice(1)}
@@ -33,6 +37,7 @@ const Form = ({ form , sendReply}) => {
                     register={register}
                     value={`answers.${index}.answer`}
                     option={item.PossibleAnswer}
+                    defaultValues={form.FormAnswered[index]?.answer}
                   />
                   <input hidden {...register(`answers.${index}.questionId`, {valueAsNumber:true})} value={item.id} />
                   {errors[item.question] && (

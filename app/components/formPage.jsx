@@ -13,7 +13,7 @@ const FormPage = ({id}) => {
           </div>
 
           <div className=' bg-slate-400 rounded-md p-6 w-[90%] drop-shadow-xl'>
-            <Form form={form?.data?.question} sendReply={sendReply}/>
+            {form && <Form form={form?.data} sendReply={sendReply}/>}
           </div>
     </div>
   )
