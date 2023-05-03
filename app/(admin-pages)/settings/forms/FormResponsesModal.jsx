@@ -72,7 +72,7 @@ const FormResponsesModal = ({ formId, uncheckedResponses }) => {
         triggerRef={triggerRef.current}
       >
         {isLoading && <Spinner />}
-        {form && formStatus && (
+        {form && formStatusMap && (
           <>
             <h3 className='mb-3'>ID: {form.data.id}</h3>
             <h3 className='font-bold'>Revision text</h3>
@@ -128,7 +128,7 @@ const FormResponsesModal = ({ formId, uncheckedResponses }) => {
                   key={userAnswers.user.id}
                   userAnswers={userAnswers}
                   onUpdate={updateResponses}
-                  formStatus={formStatusMap}
+                  formStatusMap={formStatusMap}
                 />
               ))}
               {form.data.FormAnswered.length === 0 && (

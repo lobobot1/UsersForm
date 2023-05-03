@@ -64,7 +64,7 @@ const Modal = ({
 
   return createPortal(
     <div
-      className='absolute inset-0 z-10 grid items-center justify-center'
+      className='fixed inset-0 z-10 grid items-center justify-center'
       role='dialog'
       aria-modal='true'
       aria-labelledby={`${id}-modal-title`}
