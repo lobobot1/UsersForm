@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import Gear from '../components/icons/Gear'
 import Logout from '../components/icons/Logout'
 
 const links = [
-  { href: '/settings/questions', label: 'Settings', icon: <Gear /> },
+  // { href: '/settings/questions', label: 'Settings', icon: <Gear /> },
   {
     href: '/api/auth/logout',
     label: 'Logout',
@@ -16,8 +15,8 @@ const links = [
 const Navbar = () => {
   return (
     <header className='bg-white'>
-      <div className='container mx-auto p-2 flex items-center justify-between'>
-        <div className='font-bold text-lg'>Admin dashboard</div>
+      <div className='container flex items-center justify-between p-2 mx-auto'>
+        <div className='text-lg font-bold'>Admin dashboard</div>
 
         <nav>
           <ul className='flex gap-5'>
