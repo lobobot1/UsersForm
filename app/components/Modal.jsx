@@ -1,6 +1,7 @@
 'use client'
 import { clsx } from '@/util/clsx'
-import { useEffect, useState } from 'react'
+import getFocusableElements from '@/util/getFocusableElements'
+import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import XMark from './icons/XMark'
 
@@ -17,17 +18,39 @@ const maxSizes = {
   full: '',
 }
 
-const Modal = ({ isOpen, setIsOpen, title, children, maxSize = 'md' }) => {
+const Modal = ({
+  isOpen,
+  setIsOpen,
+  title,
+  children,
+  maxSize = 'md',
+  trigger,
+}) => {
   const [isMounted, setIsMounted] = useState(false)
+  const id = useId()
+  const contentRef = useRef(null)
+  const currentFocusedElement = useRef(null)
+
   useEffect(() => setIsMounted(true), [])
+
   useEffect(() => {
     document.body.classList.toggle('overflow-hidden', isOpen)
+    if (isOpen && contentRef.current) {
+      const focusables = getFocusableElements(contentRef.current)
+      focusables[0].focus()
+      currentFocusedElement.current = 0
+    }
   }, [isOpen])
 
   if (!isOpen || !isMounted) return null
 
   return createPortal(
-    <div className='absolute inset-0 z-10 grid items-center justify-center'>
+    <div
+      className='absolute inset-0 z-10 grid items-center justify-center'
+      role='dialog'
+      aria-modal='true'
+      aria-labelledby={`${id}-modal-title`}
+    >
       <button
         className='absolute inset-0 z-0 cursor-default bg-black/20 backdrop-blur-sm'
         onClick={() => setIsOpen(false)}
@@ -40,9 +63,47 @@ const Modal = ({ isOpen, setIsOpen, title, children, maxSize = 'md' }) => {
           'bg-white rounded-md shadow-md z-10 p-3 w-screen max-h-screen flex flex-col',
           maxSizes[maxSize],
         ])}
+        ref={contentRef}
+        onKeyDown={(e) => {
+          console.log({ current: currentFocusedElement.current })
+          switch (e.key) {
+            case 'Escape':
+              setIsOpen(false)
+              break
+
+            case 'Tab':
+              e.preventDefault()
+              const focusables = getFocusableElements(contentRef.current)
+              const firstElement = focusables[0]
+              const lastElement = focusables.length - 1
+
+              if (e.shiftKey) {
+                if (currentFocusedElement.current === 0) {
+                  focusables[lastElement].focus()
+                  currentFocusedElement.current = lastElement
+                  return
+                }
+                currentFocusedElement.current -= 1
+                focusables[currentFocusedElement.current].focus()
+                return
+              }
+
+              if (currentFocusedElement.current === lastElement) {
+                firstElement.focus()
+                currentFocusedElement.current = 0
+                return
+              }
+
+              currentFocusedElement.current += 1
+              focusables[currentFocusedElement.current].focus()
+              break
+          }
+        }}
       >
         <div className='flex justify-between mb-2'>
-          <span className='text-lg font-bold'>{title}</span>
+          <span className='text-lg font-bold' id={`${id}-modal-title`}>
+            {title}
+          </span>
           <button
             className='self-start shrink-0'
             title='Close modal'
@@ -51,7 +112,9 @@ const Modal = ({ isOpen, setIsOpen, title, children, maxSize = 'md' }) => {
             <XMark />
           </button>
         </div>
-        <div className='max-h-full overflow-auto'>{children}</div>
+        <div className='max-h-full overflow-auto' tabIndex={0}>
+          {children}
+        </div>
       </div>
     </div>,
     document.body
