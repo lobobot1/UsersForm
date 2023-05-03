@@ -10,6 +10,10 @@ const maxSizes = {
   lg: 'max-w-lg',
   xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
+  '4xl': 'max-w-4xl',
+  '5xl': 'max-w-5xl',
+  '6xl': 'max-w-6xl',
+  '7xl': 'max-w-7xl',
   full: '',
 }
 
@@ -23,9 +27,9 @@ const Modal = ({ isOpen, setIsOpen, title, children, maxSize = 'md' }) => {
   if (!isOpen || !isMounted) return null
 
   return createPortal(
-    <div className='absolute inset-0 grid items-center justify-center z-10'>
+    <div className='absolute inset-0 z-10 grid items-center justify-center'>
       <button
-        className='absolute inset-0 z-0 bg-black/20 cursor-default backdrop-blur-sm'
+        className='absolute inset-0 z-0 cursor-default bg-black/20 backdrop-blur-sm'
         onClick={() => setIsOpen(false)}
       >
         <span className='sr-only'>Close modal</span>
@@ -40,7 +44,7 @@ const Modal = ({ isOpen, setIsOpen, title, children, maxSize = 'md' }) => {
         <div className='flex justify-between mb-2'>
           <span className='text-lg font-bold'>{title}</span>
           <button
-            className='shrink-0 self-start'
+            className='self-start shrink-0'
             title='Close modal'
             onClick={() => setIsOpen(false)}
           >
