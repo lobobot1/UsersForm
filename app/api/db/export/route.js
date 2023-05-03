@@ -47,6 +47,8 @@ export async function GET(request, { params }) {
 
   const topicsHeader = ['', '']
   const usersHeader = ['', '']
+  const questionheader = ['id', 'review_text']
+
   for (let entity of topicWithQuestions) {
     /** TopicsHeader creation */
     const questionLength = entity.questions.length
@@ -64,11 +66,30 @@ export async function GET(request, { params }) {
       userCell[0] = userCell[userCell.length - 1] =
         `${user.name} ${user?.lastname}_${entity.topic}`.trim()
       usersHeader.push(...userCell)
+
+      /** QuestionHeader creation */
+      const questionCells = entity.questions.map((qst) => qst.question)
+      questionheader.push(...questionCells)
     }
   }
-  const headerSheet = XLSX.utils.aoa_to_sheet([topicsHeader, usersHeader], {
+
+  /** Sane and group header rows */
+  const header = [
+    saneHeader(topicsHeader),
+    saneHeader(usersHeader),
+    questionheader,
+  ]
+
+  /** prepare sheet with headers */
+  const headerSheet = XLSX.utils.aoa_to_sheet(header, {
     skipHeader: true,
   })
+
+  /** Set merges */
+  headerSheet['!merges'] = [
+    ...searchMerges(topicsHeader, 0),
+    ...searchMerges(usersHeader, 1),
+  ]
 
   const formData = await prisma.form.findMany({
     select: {
@@ -85,7 +106,7 @@ export async function GET(request, { params }) {
             },
           },
         },
-        orderBy: [{ questionId: 'asc' }, { userId: 'asc' }],
+        orderBy: [{ question: { topicId: 'asc' } }, { userId: 'asc' }],
       },
       revisionText: true,
     },
@@ -104,11 +125,9 @@ export async function GET(request, { params }) {
     dataArrays.push(formRow)
   }
 
-  const dataSheet = utils.aoa_to_sheet(dataArrays, {
-    skipHeader: true,
+  const sheet = utils.sheet_add_aoa(headerSheet, dataArrays, {
+    origin: 'A4',
   })
-
-  const sheet = utils.sheet_add_aoa(headerSheet, dataSheet)
 
   XLSX.utils.book_append_sheet(book, sheet, 'default')
 
@@ -117,4 +136,55 @@ export async function GET(request, { params }) {
     type: 'buffer',
   })
   return successFileResponse({ data: xlsxlData, filename: 'default.xlsx' })
+}
+
+/**
+ * Returns a horizontal merge object
+ * @param { number } s col start index
+ * @param { number } e col end index
+ * @param { number } r row start & end index
+ * @returns
+ */
+function mergeFactory(s, e, r) {
+  return {
+    s: {
+      r: r,
+      c: s,
+    },
+    e: {
+      r: r,
+      c: e,
+    },
+  }
+}
+
+/**
+ *  sane header texts, remove breakpoint strings
+ * @param { string[] } headerArray
+ * @returns
+ */
+function saneHeader(headerArray) {
+  return headerArray.map((element) => {
+    const el = element.replace('with free text', '')
+    return el.match(/.*(?=_)/g) ? el.match(/.*(?=_)/g)[0] : el
+  })
+}
+/**
+ * Create array of merges
+ * @param { string[] } entityHeader
+ * @param { number } row
+ * @returns
+ */
+function searchMerges(entityHeader, row) {
+  let merges = []
+
+  const entity = new Set(entityHeader.filter((str) => str !== ''))
+
+  entity.forEach((v, k, set) => {
+    let startI = entityHeader.indexOf(v)
+    let endI = entityHeader.lastIndexOf(v)
+    merges = [...merges, mergeFactory(startI, endI, row)]
+  })
+
+  return merges
 }
