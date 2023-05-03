@@ -6,97 +6,99 @@ const prisma = new PrismaClient({})
 const questions = [
   {
     id: 1,
+    topicId: 1,
     question: 'Link to Item',
   },
   {
     id: 2,
+    topicId: 1,
     question: 'Free Text Comments',
   },
   {
     id: 3,
-    topicId: 1,
+    topicId: 2,
     question: "Feedback's main topic",
   },
   {
     id: 4,
-    topicId: 1,
+    topicId: 2,
     question: 'Contains Reasons',
   },
   {
     id: 5,
-    topicId: 2,
+    topicId: 3,
     question: "Description of item, it's parts or properties",
   },
   {
     id: 6,
-    topicId: 2,
+    topicId: 3,
     question: 'Price',
   },
   {
     id: 7,
-    topicId: 2,
+    topicId: 3,
     question: 'Experience Using it',
   },
   {
     id: 8,
-    topicId: 2,
+    topicId: 3,
     question: 'General opinion on item',
   },
   {
     id: 9,
-    topicId: 3,
+    topicId: 4,
     question: 'Match the description by the seller',
   },
   {
     id: 10,
-    topicId: 3,
+    topicId: 4,
     question: 'Packaging',
   },
   {
     id: 11,
-    topicId: 3,
+    topicId: 4,
     question: 'Shipping',
   },
   {
     id: 12,
-    topicId: 3,
+    topicId: 4,
     question: 'Communication',
   },
   {
     id: 13,
-    topicId: 3,
+    topicId: 4,
     question: 'Previous experience with the seller',
   },
   {
     id: 14,
-    topicId: 3,
+    topicId: 4,
     question: 'General opinion on seller',
   },
   {
     id: 15,
-    topicId: 4,
+    topicId: 5,
     question: 'How helpful is this feedback regarding the seller?',
   },
   {
     id: 16,
-    topicId: 4,
+    topicId: 5,
     question:
       'Why did you find the feedback helpful or not helpful? [regarding the seller]',
   },
   {
     id: 17,
-    topicId: 4,
+    topicId: 5,
     question: 'How helpful is this feedback regarding the item?',
   },
   {
     id: 18,
-    topicId: 5,
+    topicId: 6,
     question:
       'Why did you find the feedback helpful or not helpful? [regarding the item]',
   },
   {
     id: 19,
-    topicId: 5,
+    topicId: 6,
     question: 'Sentiment of feedback',
   },
 ]
@@ -172,22 +174,26 @@ async function questionsTopics() {
   const topics = [
     {
       id: 1,
-      topic: 'Feedback Topics',
+      topic: 'with free text',
     },
     {
       id: 2,
-      topic: 'Product Topics',
+      topic: 'Feedback Topics',
     },
     {
       id: 3,
-      topic: 'Seller Topics',
+      topic: 'Product Topics',
     },
     {
       id: 4,
-      topic: 'Helpful Topics',
+      topic: 'Seller Topics',
     },
     {
       id: 5,
+      topic: 'Helpful Topics',
+    },
+    {
+      id: 6,
       topic: 'Sentiment Topics',
     },
   ]
