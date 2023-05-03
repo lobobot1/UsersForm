@@ -111,7 +111,7 @@ const FormResponsesModal = ({ formId, uncheckedResponses }) => {
                 </button>
               )}
             </div>
-            {form.data.FormAnswered.length && (
+            {Boolean(form.data.FormAnswered.length) && (
               <p className='mb-2'>
                 Answered by:{' '}
                 {formatList(
