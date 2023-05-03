@@ -1,10 +1,10 @@
 'use client'
-import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import Select from './select'
+import TextArea from './TextArea'
 
-const Form = ({ form , sendReply}) => {
-
+const Form = ({ form, sendReply }) => {
   const router = useRouter()
 
   const {
@@ -14,23 +14,30 @@ const Form = ({ form , sendReply}) => {
   } = useForm()
 
   const onSubmit = async (data) => {
-    try{
+    try {
       await sendReply(data)
       router.push('/user')
-    }catch(e){
+    } catch (e) {
       alert(e)
     }
   }
-  console.log(form);
+  console.log(form)
   return (
-    <div className=' overflow-y-auto' id='scroll'>
+    <div className='overflow-y-auto ' id='scroll'>
       {form.question.length > 0 && (
         <form onSubmit={handleSubmit(onSubmit)}>
           {form.question.map((item, index) => (
             <div key={item.id} className='flex flex-col gap-2'>
-              <label className=' text-xl font-semibold'>
+              <label className='text-xl font-semibold '>
                 {item.question[0].toUpperCase() + item.question.slice(1)}
               </label>
+              <input
+                hidden
+                {...register(`answers.${index}.questionId`, {
+                  valueAsNumber: true,
+                })}
+                value={item.id}
+              />
               {item.PossibleAnswer.length > 0 ? (
                 <div className='flex flex-col'>
                   <Select
@@ -39,21 +46,20 @@ const Form = ({ form , sendReply}) => {
                     option={item.PossibleAnswer}
                     defaultValues={form.FormAnswered[index]?.answer}
                   />
-                  <input hidden {...register(`answers.${index}.questionId`, {valueAsNumber:true})} value={item.id} />
                   {errors[item.question] && (
                     <span className='text-red-500'>This field is required</span>
                   )}
                 </div>
               ) : (
-                <textarea rows='' cols=''></textarea>
+                <TextArea {...register(`answers.${index}.answer`)} />
               )}
             </div>
           ))}
-          <button id='button' type='submit' className=' mt-4'>
+          <button id='button' type='submit' className='mt-4 '>
             <div className='svg-wrapper-1'>
               <div className='svg-wrapper'>
                 <svg
-                  className='animation-bounce h-6 w-6'
+                  className='w-6 h-6 animation-bounce'
                   viewBox='0 0 24 24'
                   xmlns='http://www.w3.org/2000/svg'
                 >
