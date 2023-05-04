@@ -9,6 +9,7 @@ const User = () => {
   const dictionary = {
     'answered': 'answered',
     'revised': 'revised',
+    'updated': 'updated',
     'pending': 'pending'
   }
 
@@ -33,7 +34,7 @@ const User = () => {
       property of the first item in the `FormAnswered` array. The `href` of each link is set to
       `/form/${item.id}` where `item.id` is the `id` property of each item in the `arr` array. */}
 
-      {arr && [...arr.filter(item=>!item.FormAnswered.length),...arr.filter(item=>item.FormAnswered.length && item.FormAnswered[0].status.status=== dictionary.answered),...arr.filter(item=>item.FormAnswered.length && item.FormAnswered[0].status.status===dictionary.revised)].map((item, index) => (
+      {arr && [...arr.filter(item=>!item.FormAnswered.length),...arr.filter(item=>item.FormAnswered.length && (item.FormAnswered[0].status.status=== dictionary.answered || item.FormAnswered[0].status.status === dictionary.updated)),...arr.filter(item=>item.FormAnswered.length && item.FormAnswered[0].status.status===dictionary.revised)].map((item, index) => (
         <Link
         href={`/form/${item.id}`}
         key={index}
