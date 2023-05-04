@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const NavbarUser = () => {
   return (
-    <nav className='bg-neutral-50 shadow-md flex justify-between items-center px-6 py-2'>
+    <nav className='bg-neutral-50 fixed top-0 w-full z-10 shadow-md flex justify-between items-center px-6 py-2'>
       <h3 className="font-bold text-xl text-neutral-800">Welcome, <span className="text-teal-600">User</span>!</h3>
       
       <Link href='/api/auth/logout'

@@ -7,7 +7,7 @@ export default function Home({ params }) {
   
 
   return (
-    <main className='flex flex-col bg-neutral-200 min-h-screen'>
+    <main className='flex flex-col mt-10 bg-neutral-200 h-screen'>
       <div className='text-5xl text-black pl-11 pt-11 flex justify-start '>
         <Link href={'/user'} className=' rounded-md mr-5'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className=" w-12 h-12">

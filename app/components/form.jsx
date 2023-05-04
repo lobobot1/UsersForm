@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form'
 import Select from './select'
 import TextArea from './TextArea'
 
-const Form = ({ form, sendReply }) => {
+const Form = ({ form, send }) => {
   const router = useRouter()
+
+  let defaultValues = form.FormAnswered ? {} : {}
 
   const {
     register,
@@ -14,20 +16,25 @@ const Form = ({ form, sendReply }) => {
   } = useForm()
 
   const onSubmit = async (data) => {
-    try {
-      await sendReply(data)
-      router.push('/user')
-    } catch (e) {
-      alert(e)
-    }
+      try {
+        await send(data)
+        router.push('/user')
+      } catch (e) {
+        alert(e)
+      }
+    
   }
+
   console.log(form)
+
+  const answerMap = form.FormAnswered.length? new Map(form.FormAnswered[0].answers.map(fa => [fa.question.id, fa])) : null
+  
   return (
-    <div className='overflow-y-auto ' id='scroll'>
+    <div className='h-[65vh]' id='scroll'>
       {form.question.length > 0 && (
         <form onSubmit={handleSubmit(onSubmit)}>
           {form.question.map((item, index) => (
-            <div key={item.id} className='flex flex-col gap-2'>
+            <div key={item.id} className='flex flex-col gap-2 mb-4'>
               <label className='text-xl font-semibold '>
                 {item.question[0].toUpperCase() + item.question.slice(1)}
               </label>
@@ -44,7 +51,7 @@ const Form = ({ form, sendReply }) => {
                     register={register}
                     value={`answers.${index}.answer`}
                     option={item.PossibleAnswer}
-                    defaultValues={form.FormAnswered[index]?.answer}
+                    defaultValues={form.FormAnswered.length ? answerMap.get(item.id).answer : ''}
                   />
                   {errors[item.question] && (
                     <span className='text-red-500'>This field is required</span>
