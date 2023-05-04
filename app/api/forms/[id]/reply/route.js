@@ -12,7 +12,7 @@ import {
 } from '@lib/http/ResponseHandler'
 import prisma from '@lib/prisma'
 import { NextRequest } from 'next/server'
-const { ANSWERED_STATUS } = process.env
+const { ANSWERED_STATUS, UPDATED_STATUS } = process.env
 const select = {
   id: true,
   FormAnswered: {

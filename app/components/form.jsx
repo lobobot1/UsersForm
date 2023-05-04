@@ -7,7 +7,7 @@ import TextArea from './TextArea'
 const Form = ({ form, send }) => {
   const router = useRouter()
 
-  let defaultValues = form.FormAnswered ? {} : {}
+  const hasAnswer = Boolean(form.FormAnswered.length)
 
   const {
     register,
@@ -16,19 +16,18 @@ const Form = ({ form, send }) => {
   } = useForm()
 
   const onSubmit = async (data) => {
-      try {
-        await send(data)
-        router.push('/user')
-      } catch (e) {
-        alert(e)
-      }
-    
+    try {
+      await send(data)
+      router.push('/user')
+    } catch (e) {
+      alert(e)
+    }
   }
 
-  console.log(form)
+  const answerMap = hasAnswer
+    ? new Map(form.FormAnswered[0].answers.map((fa) => [fa.question.id, fa]))
+    : null
 
-  const answerMap = form.FormAnswered.length? new Map(form.FormAnswered[0].answers.map(fa => [fa.question.id, fa])) : null
-  
   return (
     <div className='h-[65vh]' id='scroll'>
       {form.question.length > 0 && (
@@ -40,10 +39,15 @@ const Form = ({ form, send }) => {
               </label>
               <input
                 hidden
-                {...register(`answers.${index}.questionId`, {
-                  valueAsNumber: true,
-                })}
-                value={item.id}
+                {...register(
+                  hasAnswer
+                    ? `answers.${index}.id`
+                    : `answers.${index}.questionId`,
+                  {
+                    valueAsNumber: !hasAnswer,
+                  }
+                )}
+                value={hasAnswer ? answerMap.get(item.id).id : item.id}
               />
               {item.PossibleAnswer.length > 0 ? (
                 <div className='flex flex-col'>
@@ -51,14 +55,19 @@ const Form = ({ form, send }) => {
                     register={register}
                     value={`answers.${index}.answer`}
                     option={item.PossibleAnswer}
-                    defaultValues={form.FormAnswered.length ? answerMap.get(item.id).answer : ''}
+                    defaultValues={
+                      hasAnswer ? answerMap.get(item.id).answer : ''
+                    }
                   />
                   {errors[item.question] && (
                     <span className='text-red-500'>This field is required</span>
                   )}
                 </div>
               ) : (
-                <TextArea {...register(`answers.${index}.answer`)} />
+                <TextArea
+                  {...register(`answers.${index}.answer`)}
+                  defaultValue={hasAnswer ? answerMap.get(item.id).answer : ''}
+                />
               )}
             </div>
           ))}
