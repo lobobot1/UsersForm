@@ -8,7 +8,6 @@ import { NextRequest } from 'next/server'
 import prisma from '@lib/prisma'
 import { encryptToSaveDB } from '@lib/crypt'
 import isAdminRequest from '@lib/auth/isAdminRequest'
-import emailRegex from '@/util/emailRegex'
 import {
   fatality,
   someFieldMissing,
@@ -16,6 +15,7 @@ import {
   unauthorized,
 } from '@lib/http/ErrorHandler'
 import { creationResponse } from '@lib/http/ResponseHandler'
+import emailCheck from '@/util/emailRegex'
 
 /**
  *
@@ -57,7 +57,7 @@ export async function POST(request) {
       return someFieldMissing({ message: 'nickname is already used' })
   }
   /** check if it's an valid email */
-  const isEmail = emailRegex.test(email)
+  const isEmail = emailCheck(email)
 
   if (!isEmail) {
     return someFieldMissing({ message: 'wrong email address' })
