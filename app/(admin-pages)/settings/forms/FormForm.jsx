@@ -43,7 +43,7 @@ const FormForm = ({
   } = useForm({
     defaultValues: defaultValues ?? {
       revisionText: '',
-      questions: [{ id: questions[0].id }],
+      questions: [{ id: questions[0]?.id || '' }],
     },
   })
 

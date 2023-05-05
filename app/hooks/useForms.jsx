@@ -2,8 +2,8 @@ import { fetch } from '@lib/fetch'
 import { useCallback } from 'react'
 import useSWR from 'swr'
 
-export default function useForms() {
-  const swr = useSWR('/api/forms', fetch)
+export default function useForms({ page = 1 } = {}) {
+  const swr = useSWR(`/api/forms?page=${page}`, fetch)
 
   const createForm = useCallback(
     /** @param {{ revisionText: string, questions: { id: string }[] }} data */
