@@ -9,6 +9,7 @@ import { NextRequest } from 'next/server'
  * @param { NextRequest} request
  */
 export async function GET(request) {
+  const page = request.nextUrl.searchParams.get('page')
   if (!isLoggedRequest()) return unauthorized({ entity: 'read forms' })
   const isAdmin = await isAdminRequest(request)
   const userId = getCookieId(request)
@@ -17,6 +18,21 @@ export async function GET(request) {
       id: userId,
     },
   }
+  let pagination
+  let metaPage
+  if (page) {
+    const formCount = await prisma.form.count({
+      where: !isAdmin ? where : undefined,
+    })
+    const formForPage = 10
+    const pages = Math.ceil(formCount / formForPage)
+
+    const skip = formForPage * (page - 1)
+    const take = formForPage
+    metaPage = { totaPages: pages, totalResults: formCount, currentPage: page }
+    pagination = { skip, take }
+  }
+
   const data = await prisma.form.findMany({
     select: {
       id: true,
@@ -67,9 +83,10 @@ export async function GET(request) {
       },
     },
     orderBy: { updatedAt: 'desc' },
+    ...pagination,
   })
 
   if (!data) return fatality()
 
-  return successListResponse({ data })
+  return successListResponse({ data, meta: metaPage })
 }
