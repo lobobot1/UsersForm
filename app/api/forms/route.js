@@ -22,7 +22,9 @@ export async function GET(request) {
   let metaPage
   if (page) {
     const formCount = await prisma.form.count({
-      where: !isAdmin ? where : undefined,
+      where: {
+        FormAnswered: { some: { userId: !isAdmin ? userId : undefined } },
+      },
     })
     const formForPage = 10
     const pages = Math.ceil(formCount / formForPage)
