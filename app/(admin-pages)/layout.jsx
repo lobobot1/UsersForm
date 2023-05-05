@@ -11,7 +11,7 @@ export default async function RootLayout({ children }) {
   )
 
   if (!isAdmin) {
-    redirect('/user')
+    return redirect('/user')
   }
 
   return (

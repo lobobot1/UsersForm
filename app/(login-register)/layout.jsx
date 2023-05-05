@@ -5,11 +5,11 @@ export default function RootLayout({ children }) {
   const isLogged = isLoggedRequest()
 
   if (isLogged) {
-    redirect('/user')
+    return redirect('/user')
   }
 
   return (
-    <div className='min-w-screen min-h-screen bg-gray-800 flex flex-col items-center justify-center p-5'>
+    <div className='flex flex-col items-center justify-center min-h-screen p-5 bg-gray-800 min-w-screen'>
       {children}
     </div>
   )

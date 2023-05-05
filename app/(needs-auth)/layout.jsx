@@ -9,20 +9,20 @@ export default async function RootLayout({ children }) {
   const isLogged = isLoggedRequest()
 
   if (!isLogged) {
-    redirect('/login')
+    return redirect('/login')
   }
 
   const isAdmin = await isAdminRequestFront(
     cookies().get(cookieOption.name)?.value
   )
   if (isAdmin) {
-    redirect('/settings/forms')
+    return redirect('/settings/forms')
   }
 
   return (
     <div className='flex flex-col'>
       <NavbarUser />
-      <main className='bg-neutral-200 min-h-screen'>{children}</main>
+      <main className='min-h-screen bg-neutral-200'>{children}</main>
     </div>
   )
 }
