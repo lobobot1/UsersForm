@@ -8,6 +8,8 @@ RUN npx prisma generate
 RUN npm run build
 RUN rm -rf /user/app/node_modules
 RUN npm i --omit=dev
+RUN rm -rf app
+ls
 
 CMD ["npm", "run", "start"]
 
