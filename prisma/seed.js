@@ -102,16 +102,10 @@ const questions = [
     question: 'Sentiment of feedback',
   },
 ]
-
+const { NODE_ENV, SECRET } = process.env
 const envPaths = {
   production: '.env',
-  development: '.env.local',
   default: '.env.example',
-}
-
-const envFile = envPaths[process.env.NODE_ENV]
-if (!fs.existsSync(envFile)) {
-  return console.error('Not found env path')
 }
 
 /** Execute Seeder */
@@ -145,10 +139,17 @@ async function Main() {
 async function firstAdmin() {
   /** Seed first Admin user */
   console.log('👨‍💻 Generating Administrator User')
+  async function getSecret() {
+    const envFile = envPaths[NODE_ENV]
 
-  const file = await fs.promises.readFile(envFile, 'utf-8')
-  const secret = file.match(/SECRET="(.*)"/)[1]
+    if (envFile && !fs.existsSync(envFile)) {
+      return console.error('Not found env path')
+    }
+    const file = await fs.promises.readFile(envFile, 'utf-8')
+    return file.match(/SECRET="(.*)"/)[1]
+  }
 
+  const secret = NODE_ENV === 'production' ? SECRET : await getSecret()
   const data = {
     id: 1,
     email: 'example@gmail.com',

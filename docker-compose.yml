@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  user-form:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@<service_name>:5432/<db>?schema=public&pool_timeout=0&connection_limit=20
+      - SECRET=<SECRET_PHRASE><SECRET_PHRASE><SECRET_PHRASE>
+      - TZ=America/Caracas
+      - NODE_ENV=production
+    ports:
+      - '3000:3000'
+    restart: always

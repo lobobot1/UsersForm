@@ -1,0 +1,24 @@
+#ignore env variables
+.env*
+
+
+#ignore git files
+/.git
+.gitignore
+
+
+#ignore node_modules dependencies
+/node_modules
+
+#ignore .next directory & .vscode
+/.vscode
+/.next
+
+#ignore lock of package managers
+package-lock.json
+pnpm-lock.yaml
+*-lock.*
+
+#ignore docker files 
+Dockerfile
+.dockerignore
