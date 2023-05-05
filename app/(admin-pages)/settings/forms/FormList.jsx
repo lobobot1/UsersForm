@@ -3,6 +3,7 @@
 import { Pagination } from '@/app/components/Pagination'
 import useForms from '@/app/hooks/useForms'
 import { useSearchParams } from 'next/navigation'
+import SkeletonList from '../SkelentonList'
 import FormItem from './FormItem'
 
 const FormList = () => {
@@ -14,7 +15,7 @@ const FormList = () => {
   })
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <SkeletonList />
   }
   if (error) {
     return <p>{error.message}</p>

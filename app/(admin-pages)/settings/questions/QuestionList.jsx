@@ -1,13 +1,14 @@
 'use client'
 
 import useQuestions from '@/app/hooks/useQuestions'
+import SkeletonList from '../SkelentonList'
 import QuestionItem from './QuestionItem'
 
 const QuestionList = () => {
   const { questions, error, isLoading } = useQuestions()
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <SkeletonList count={20} />
   }
   if (error) {
     return <p>{error.message}</p>

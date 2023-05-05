@@ -30,7 +30,11 @@ export default function useFormDetail(id, enabled = true) {
         body: data,
       })
       await swr.mutate()
-      await mutate('/api/forms')
+      await mutate(
+        (key) => typeof key === 'string' && key.startsWith('/api/forms'),
+        undefined,
+        { revalidate: true }
+      )
     },
     [swr, id, mutate]
   )

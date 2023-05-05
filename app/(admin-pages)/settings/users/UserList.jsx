@@ -1,13 +1,14 @@
 'use client'
 
 import useUsers from '@/app/hooks/useUsers'
+import SkeletonList from '../SkelentonList'
 import UserItem from './UserItem'
 
 const UserList = () => {
   const { users, error, isLoading, deleteUser } = useUsers()
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <SkeletonList count={3} />
   }
   if (error) {
     return <p>{error.message}</p>
