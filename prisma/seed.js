@@ -233,7 +233,7 @@ async function firstPossibleAnswers() {
   console.log('🖊️ Generating possible answers... ')
   try {
     const answers = [
-      {
+      { 
         questionId: 3,
         answers: [
           {
@@ -268,7 +268,7 @@ async function firstPossibleAnswers() {
         ],
       },
       {
-        topicId: [2, 3],
+        topicId: [3, 4],
         answers: [
           {
             answer: 'yes',
@@ -279,7 +279,7 @@ async function firstPossibleAnswers() {
         ],
       },
       {
-        topicId: [4],
+        topicId: [5],
         answers: [
           {
             answer: '0 - not helpful to anyone',
@@ -297,7 +297,7 @@ async function firstPossibleAnswers() {
       },
 
       {
-        topicId: [5],
+        topicId: [6],
         answers: [
           {
             answer: 'Positive',
