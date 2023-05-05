@@ -1,15 +1,18 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { successFileResponse } from '@lib/http/ResponseHandler'
 
 import prisma from '@lib/prisma'
 import XLSX, { utils } from 'xlsx'
+const { REVISED_STATUS } = process.env
 /**
  *
- * @param { NextResponse } request
+ * @param { NextRequest } request
  * @param { import("next").NextPageContext } context
  * @param { object } context.params
  */
 export async function GET(request, { params }) {
+  const searchStatus =
+    request.nextUrl.searchParams.get('status') ?? REVISED_STATUS
   /** Prepare SpreadSheet Book */
   const book = XLSX.utils.book_new()
 
@@ -30,7 +33,13 @@ export async function GET(request, { params }) {
     where: {
       questions: {
         /**for develope 1; for prod -> revised_status */
-        some: { Forms: { some: { FormAnswered: { some: { statusId: 1 } } } } },
+        some: {
+          Forms: {
+            some: {
+              FormAnswered: { some: { statusId: Number(searchStatus) } },
+            },
+          },
+        },
       },
     },
   })
@@ -38,7 +47,7 @@ export async function GET(request, { params }) {
   const formUsers = await prisma.user.findMany({
     select: { id: true, name: true, lastname: true },
     /**for develope 1; for prod -> revised_status */
-    where: { FormAnswered: { some: { statusId: 1 } } },
+    where: { FormAnswered: { some: { statusId: Number(searchStatus) } } },
     orderBy: {
       id: 'asc',
     },
@@ -109,6 +118,13 @@ export async function GET(request, { params }) {
         orderBy: [{ question: { topicId: 'asc' } }, { userId: 'asc' }],
       },
       revisionText: true,
+    },
+    where: {
+      FormAnswered: {
+        some: {
+          statusId: Number(searchStatus),
+        },
+      },
     },
   })
 
