@@ -29,7 +29,7 @@ export async function GET(request) {
 
     const skip = formForPage * (page - 1)
     const take = formForPage
-    metaPage = { totaPages: pages, totalResults: formCount, currentPage: page }
+    metaPage = { totalPages: pages, totalResults: formCount, currentPage: page }
     pagination = { skip, take }
   }
 
