@@ -309,7 +309,7 @@ async function firstPossibleAnswers() {
             answer: 'Mixed positive and negative',
           },
           {
-            answer: 'Neutrual',
+            answer: 'Neutral',
           },
         ],
       },

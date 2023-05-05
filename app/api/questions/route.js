@@ -19,8 +19,7 @@ export async function GET() {
       topic: { select: { id: true, topic: true } },
       updatedAt: true,
       createdAt: true,
-    },
-    orderBy: { question: 'asc' },
+    }
   })
 
   if (!data) return fatality()

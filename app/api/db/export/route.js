@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { successFileResponse } from '@lib/http/ResponseHandler'
+import { NextRequest } from 'next/server'
 
 import prisma from '@lib/prisma'
 import XLSX, { utils } from 'xlsx'
@@ -72,8 +72,9 @@ export async function GET(request, { params }) {
     const userPlaceCell = Array(questionLength).fill('')
     for (let user of formUsers) {
       const userCell = [...userPlaceCell]
-      userCell[0] = userCell[userCell.length - 1] =
-        `${user.name} ${user?.lastname}_${entity.topic}`.trim()
+      userCell[0] = userCell[userCell.length - 1] = `${user.name} ${
+        user?.lastname
+      }_${entity.topic ?? ''}`.trim()
       usersHeader.push(...userCell)
 
       /** QuestionHeader creation */
@@ -108,7 +109,9 @@ export async function GET(request, { params }) {
           id: true,
           questionId: true,
           answer: true,
-          status: { select: { id: true } },
+          status: {
+            select: { id: true },
+          },
           user: {
             select: {
               id: true,
