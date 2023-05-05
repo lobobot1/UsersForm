@@ -3,8 +3,12 @@ import Link from 'next/link'
 
 /**
  * @param {{
- *  page: number
- *  pages: number
+ *  page: number,
+ *  pages: number,
+ *  getLink: (page: number) => string,
+ *  linkBaseClassname?: string,
+ *  activeClassname?: string,
+ *  notActiveClassname?: string,
  * }} props
  */
 export const Pagination = ({
