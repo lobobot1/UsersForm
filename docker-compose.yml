@@ -5,21 +5,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - SECRET=<SECRET_PHRASE><SECRET_PHRASE><SECRET_PHRASE>
-      - TZ=America/Caracas
-      - NODE_ENV=production
-      # ID of status: answered
-      - ANSWERED_STATUS=1
-      # ID of status: reviewed
-      - REVISED_STATUS=5
-      # ID of status: updated (for the user)
-      - UPDATED_STATUS=6
+      args:
+        ANSWERED_STATUS: ${ANSWERED_STATUS}
+        CREATED_STATUS: ${CREATED_STATUS}
+        DATABASE_URL: ${DATABASE_URL}
+        HOSTNAME: ${HOSTNAME}
+        REVISED_STATUS: ${REVISED_STATUS}
+        SECRET: ${SECRET}
+        UPDATED_STATUS: ${UPDATED_STATUS}
     volumes:
-      - sqlite:/user/app/db
+      - sqlite:/app/db
     ports:
       - '3000:3000'
     restart: no
 
 volumes:
   sqlite:
+    

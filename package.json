@@ -8,9 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "win:seed:dev": "set NODE_ENV=development&& prisma db seed",
-    "li:seed:dev":"NODE_ENV=development prisma db seed",
-    "win:seed:prod":"set NODE_ENV=production&& prisma db seed",
-    "li:seed:prod":"NODE_ENV=productio prisma db seed"
+    "li:seed:dev": "NODE_ENV=development prisma db seed",
+    "win:seed:prod": "set NODE_ENV=production&& prisma db seed",
+    "li:seed:prod": "NODE_ENV=production prisma db seed"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
