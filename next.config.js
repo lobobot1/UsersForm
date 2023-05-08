@@ -5,10 +5,11 @@ const nextConfig = {
   },
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {
-      config.cache = false;
+      config.cache = true
     }
-    return config;
+    return config
   },
+  output: 'standalone',
 }
 
 module.exports = nextConfig
