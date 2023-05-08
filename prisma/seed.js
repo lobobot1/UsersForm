@@ -1,7 +1,14 @@
 const { PrismaClient } = require('@prisma/client')
+const CryptoJS = require('crypto-js')
 const fs = require('fs')
 
-const CryptoJS = require('crypto-js')
+const { NODE_ENV, SECRET } = process.env
+console.log({ NODE_ENV, SECRET })
+const envPaths = {
+  development: '.env.local',
+  test: '.env.example',
+}
+
 const prisma = new PrismaClient({})
 const questions = [
   {
@@ -102,11 +109,6 @@ const questions = [
     question: 'Sentiment of feedback',
   },
 ]
-const { NODE_ENV, SECRET } = process.env
-const envPaths = {
-  production: '.env',
-  default: '.env.example',
-}
 
 /** Execute Seeder */
 Main()
@@ -233,7 +235,7 @@ async function firstPossibleAnswers() {
   console.log('🖊️ Generating possible answers... ')
   try {
     const answers = [
-      { 
+      {
         questionId: 3,
         answers: [
           {
