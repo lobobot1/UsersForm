@@ -19,7 +19,7 @@ services:
       - sqlite:/user/app/db
     ports:
       - '3000:3000'
-    restart: always
+    restart: no
 
 volumes:
   sqlite:
