@@ -23,7 +23,18 @@ const User = () => {
       <p className='p-2 text-center bg-teal-600 rounded-md text-neutral-50 text-xl'>Total: {forms?.data.length}</p>
     </div>
 
+    <div className='flex justify-start mb-2 gap-x-2 mx-2 px-3'>
+      <p>Unread</p>
+      <div className=' rounded-full bg-neutral-100 p-3'></div>
+      <p>Answered</p>
+      <div className='rounded-full bg-green-400 p-3'></div>
+      <p>Checked</p>
+      <div className='rounded-full bg-blue-400 p-3 opacity-60'></div>
+    </div>
+
     <div className=' py-[.1rem] mx-2 rounded-md bg-neutral-500'></div>
+
+    
 
     <section className='mt-4 p-2 grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2'>
 
