@@ -1,4 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# UsersForms
+
+This project works with [Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/router-handlers) feature of [NextJS](https://nextjs.org/docs) and [Prisma.io](https://www.prisma.io/docs/getting-started) as ORM.
+
+## First needs clone this repositorie
+
+```bash
+git clone https://github.com/lobobot1/UsersForm.git
+```
+
+or
+
+```bash
+gh repo clone lobobot1/UsersForm
+```
+
+by default does not work without setting up an env file like `.env.local` or `.env` in the root directory with all variables declared inside `.env.example`.
+
+It is also necessary to pay attention to the scripts inside `package.json` like `win:seed:prod` or any other.
+
+With this in the `prisma/seed.js` file the `NODE_ENV` variable is used which has three possible values `"production" | "development" | "test"` depending on this variable the file takes a different behavior.
 
 ## Getting Started
 
@@ -14,24 +34,20 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+# Getting Started with Docker compose
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.js`.
+First create the .env file from the .env.example file. Where we can configure the hostname, the base url and the database url from where this application works.
+After that run the following command:
+
+```bash
+# from the UsersForm project directory
+docker compose up
+```
+
+This builds the production image from the repository and configures all the initial parameters, with this if we have any updates we only need to add the `--build` flag to rebuild the image with the updates.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# UsersForms
+_For code inquiries or performance problems contact with us_
