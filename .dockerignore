@@ -1,5 +1,5 @@
 #ignore env variables
-.env*
+*/**.env.*
 
 #ignore node_modules dependencies
 node_modules
@@ -16,4 +16,4 @@ Dockerfile
 .dockerignore
 
 #database files
-*.db
+*/**.db
